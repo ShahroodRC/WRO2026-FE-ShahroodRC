@@ -163,9 +163,9 @@ ShahroodRC secured **1st Place** at the Iran National WRO 2025 Competition (Augu
 
 ### 2025 International Final – Singapore
 Competing in the World Robot Olympiad 2025 (November 26–28, Singapore), ShahroodRC achieved:
-- ✅ **Perfect Score** in Open Challenge
-- ✅ **Perfect Score** in Obstacle Challenge
-- 🌍 **12th Place Globally** among 500+ international teams
+- ✅ **Full Score** in Open Challenge
+- ✅ **Full Score** in Obstacle Challenge
+- 🌍 **12th Place Globally**
 
 ### 2026 National Qualifiers
 Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 2026, Tehran) to qualify for WRO 2026 International Final.
@@ -188,6 +188,8 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
+
+
 ## 🤝 Contributing & Support
 
 This project is **open-source** and welcomes:
@@ -199,6 +201,11 @@ This project is **open-source** and welcomes:
 - 📧 **Email**: sepehryavarzadeh@gmail.com (Project Manager)
 - 🌐 **Instagram**: [@shahroodrc](https://instagram.com/shahroodrc)
 - 📹 **YouTube**: [ShahroodRC Channel](https://youtube.com/@shahroodrc)
+
+---
+
+## Mobility & Mechanical Design
+
 
 ---
 
