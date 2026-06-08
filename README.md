@@ -163,9 +163,9 @@ ShahroodRC secured **1st Place** at the Iran National WRO 2025 Competition (Augu
 
 ### 2025 International Final – Singapore
 Competing in the World Robot Olympiad 2025 (November 26–28, Singapore), ShahroodRC achieved:
-- ✅ **Perfect Score** in Open Challenge
-- ✅ **Perfect Score** in Obstacle Challenge
-- 🌍 **12th Place Globally** among 500+ international teams
+- ✅ **Full Score** in Open Challenge
+- ✅ **Full Score** in Obstacle Challenge
+- 🌍 **12th Place Globally**
 
 ### 2026 National Qualifiers
 Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 2026, Tehran) to qualify for WRO 2026 International Final.
@@ -188,6 +188,8 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
+
+
 ## 🤝 Contributing & Support
 
 This project is **open-source** and welcomes:
@@ -199,6 +201,51 @@ This project is **open-source** and welcomes:
 - 📧 **Email**: sepehryavarzadeh@gmail.com (Project Manager)
 - 🌐 **Instagram**: [@shahroodrc](https://instagram.com/shahroodrc)
 - 📹 **YouTube**: [ShahroodRC Channel](https://youtube.com/@shahroodrc)
+
+---
+
+## Mobility & Mechanical Design — تحرک و طراحی مکانیکی
+
+هدف این بخش ارائهٔ طراحی مکانیکی و راه‌حل‌های تحرکی ربات است تا معیارهای قضاوت WRO را به‌صورت کامل پوشش دهد. در قدم‌های بعدی هر زیرعنوان را به‌صورت دقیق و با داده/تصاویر/محاسبات تکمیل خواهیم کرد.
+
+### 1. معرفی کلی (Overview)
+- خلاصه‌ای از فلسفهٔ طراحی، اهداف عملکردی (پایداری، سرعت، دقت) و محدودیت‌ها (قوانین WRO، وزن، اندازه).
+
+### 2. شاسی و معماری ساختاری (Chassis & Structural Design)
+- نوع شاسی (قاب‌بندی، باز/بسته)، نقاط اتصال حیاتی، تحلیل استحکام کلی و دلایل انتخاب هندسه.
+
+### 3. سامانهٔ محرک و گیربکس (Drive System & Gear Ratios)
+- موتورهای استفاده‌شده، نسبت‌های دنده‌ای، محاسبات توان و گشتاور، مزایای انتخاب شده نسبت به جایگزین‌ها.
+
+### 4. چرخ‌ها، کشش و انتخاب مواد (Wheels, Traction & Materials)
+- انتخاب نوع چرخ، قطر و پهنا، پوشش لاستیکی، تحلیل کشش و مقاومت لغزش، انتخاب مواد برای قطعات بحرانی.
+
+### 5. سیستم فرمان‌دهی و تعلیق (Steering & Suspension)
+- نوع فرمان (دوچرخ، چهارچرخ، آرنجی)، مکانیزم تعلیق (در صورت وجود)، نحوهٔ حفظ تماس با زمین در سطوح نامساوی.
+
+### 6. یکپارچه‌سازی حسگرها و مونتاز (Sensor Mounting & Integration)
+- محل نصب دوربین/سنسورها، معیارهای زاویه/ارتفاع، روش‌های ثابت‌سازی و کاهش نویز مکانیکی.
+
+### 7. توزیع بار و پایداری (Load Distribution & Stability)
+- مرکز جرم، محدودهٔ پایدار، تحلیل واژگونی و تغییرات طراحی برای افزایش پایداری در مانورها.
+
+### 8. نصب، تولید و قطعه‌سازی (Assembly & Fabrication)
+- دستورالعمل کلی مونتاژ، قطعات سفارشی (3D-printed)، پیچ‌ها/برآمدگی‌ها و نکات مقاوم‌سازی.
+
+### 9. ایمنی مکانیکی و رعایت قوانین (Mechanical Safety & Compliance)
+- جلوگیری از قطعات تیز/آزاد، ایمنی مدارهای متصل به مکانیک، انطباق با قوانین WRO دربارهٔ قطعات و وزن.
+
+### 10. تست، اعتبارسنجی و معیارهای عملکرد (Testing & Validation)
+- برنامهٔ آزمایش (تست‌های استاتیک و دینامیک)، معیارهای گذر (سرعت، دقت مسیر، توانایی عبور از موانع) و نتایج نمونه.
+
+### 11. بهینه‌سازی و ملاحظات طراحی (Optimization & Trade-offs)
+- بررسی گزینه‌های جایگزین، نحوهٔ بهبود بازده و کاهش وزن بدون افت عملکرد.
+
+### 12. چک‌لیست امتیازدهی برای داوران (Judge-Focused Checklist)
+- مواردی که باید ارائه و مستندسازی شوند تا حداکثر امتیاز مکانیک و تحرک کسب شود (مستندات، محاسبات، تصاویر، ویدیوهای تست).
+
+### منابع و مراجع
+- محل قرارگیری نقشه‌ها، CAD، عکس‌های اسمبلی و فایل‌های محاسباتی (لینک‌ها و توضیحات).
 
 ---
 
