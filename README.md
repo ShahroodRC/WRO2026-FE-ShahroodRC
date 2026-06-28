@@ -84,6 +84,8 @@ ShahroodRC blends "Shahrood" (our hometown in Iran, symbolizing resilience like 
     - [🏁 Qualification Round (Open Challenge)](#-qualification-round-open-challenge)
     - [🏆 Final Round with Obstacle Avoidance (Obstacle Challenge)](#-final-round-with-obstacle-avoidance-obstacle-challenge)
 - [🏗️ Robot Assembly Guide](#️-robot-assembly-guide)
+- [🧠 Software Architecture & Obstacle Strategy](#-software-architecture--obstacle-strategy)
+- [🧠 Systems Thinking & Engineering Decisions](#-systems-thinking--engineering-decisions)
 - [🛠️ Software Setup & Installation](#️-software-setup--installation)
 - [🔧 Sensor Calibration Guide](#-sensor-calibration-guide)
 - [🔴 Problems and Solutions](#-problems-and-solutions)
@@ -275,7 +277,107 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
-## 🤝 Contributing & Support
+## 🧠 Software Architecture & Obstacle Strategy
+
+### A. Code Structure and Modules
+- The software runs on **EV3Dev2 Python** using two main scripts: `code/open_challenge.py` for the open-course run and `code/obstacle_challenge.py` for the obstacle course.
+- Each script follows a layered structure:
+  - hardware initialization and port assignment
+  - perception and sensor processing
+  - motion control and steering commands
+  - behavior state management and progression through course segments
+- Reusable helper functions include `clamp()` for safe output limiting and `amotor()` for converting target steering into a controlled medium-motor command.
+- The code uses distinct logical modules rather than separate Python packages: motor control, ultrasonic wall sensing, Pixy vision, search fallback behavior, and route progression.
+
+### B. State Machines and Execution Flow
+- The robot begins in a **startup state**: all sensors are initialized, LEDs indicate readiness, and the run begins after the EV3 button press.
+- Both scripts use explicit loop variables and counters as state managers:
+  - `g`, `a`, `door` and `jahat` in `obstacle_challenge.py`
+  - `sig`, `lastsig`, `Yignor`, `a`, `fasele`, and `ghabeliat` in `open_challenge.py`
+- Key runtime states include:
+  - **direction selection**: compare left/right ultrasonic distances to decide the initial approach side
+  - **visual target search**: attempt to detect signatures with the Pixy camera and use `sig` values to classify objects
+  - **tracking mode**: steer toward a detected target when a valid Pixy signature appears
+  - **fallback wall/line following**: when vision fails, use ultrasonic sensors to maintain a lane or wall reference
+  - **segment progression**: advance counters and break loops when the current course section completes
+
+### C. Lane Following and Path Control
+- Lane following is implemented using **side ultrasonic sensing** with a target distance setpoint around **27–33 cm** from the wall.
+- The control law is proportional: `out = (setpoint - measured_distance) * direction_sign`, then limited with `clamp()` to prevent oversteering.
+- In `open_challenge.py`, the robot also uses Pixy X-coordinates to center itself on a detected target or line marker: `target = (x - center) * gain`, then `amotor(target)` to adjust steering.
+- The `amotor()` helper limits steering output and smooths actuator response, providing stable motion while the robot moves forward continuously.
+
+### D. Obstacle Logic and Vision Strategy
+- The Pixy camera is set to `ALL` mode and the code reads signature values from `pixy.value()`, producing `sig==1` or `sig==2` for two target classes.
+- A valid detection is gated with a minimum `y` value (`Yignor`) to ensure the object is large enough and close enough to trust.
+- When a target is visible, the robot computes a steering correction from the Pixy horizontal position and drives toward the object at moderate speed.
+- If vision is lost (`sig == 0`), the software enters a **search fallback**:
+  - continue forward while slowly changing steering until a signature reappears
+  - if necessary, hold a steady course briefly while continuously checking for new detections
+- In `obstacle_challenge.py`, the code augments vision with wall-following behavior: when the target is absent, the robot uses the active side ultrasonic sensor and `fasele` to maintain a safe clearance along the wall.
+
+### E. Algorithm Explanation
+- Steering is governed by proportional control: the error between desired and actual values is multiplied by a gain, then clamped to a safe motor range.
+- In `open_challenge.py`, `amotor()` scales the steering error with `0.7` and applies a maximum magnitude, which dampens oscillation and improves stability.
+- In `obstacle_challenge.py`, initial wall control uses a non-linear transformation of the ultrasonic distance to compute a smooth steering command, making the robot more responsive when it gets closer to the wall.
+- The overall strategy balances visual tracking with robust fallback behaviors, combining **vision-guided target alignment** and **ultrasonic-based lane following** so the robot can continue even when the path or object is temporarily lost.
+
+---
+
+## � Systems Thinking & Engineering Decisions
+
+This section summarizes the main engineering decisions behind the robot design, the relationships between subsystems, and the reasoning used to make the system robust for the Future Engineers challenge.
+
+### Subsystem Interactions
+- The drive and steering subsystems are coupled through the EV3 control logic: the rear drive motor provides forward propulsion while the front steering motor changes the heading. The software converts steering targets into controlled actuator commands through a proportional controller with output limiting.
+- The vision subsystem uses the Pixy 2.1 camera to detect task-relevant objects and estimate their horizontal position and size. These measurements influence steering direction and speed during target tracking.
+- The proximity subsystem uses two ultrasonic sensors placed on the left and right sides of the robot to maintain a safe side clearance and to support fallback behavior when vision is temporarily lost.
+- The gyro subsystem continuously provides yaw-angle feedback to the EV3 brick, allowing the robot to stabilize heading and correct drift during motion.
+- The lighting subsystem uses front LEDs powered by a separate battery pack and controlled through a relay connected to OUTPUT_A. This improves visibility for the camera and makes detection more reliable in different lighting conditions.
+
+### Constraints
+- Mechanical constraints: robot dimensions are approximately 24 cm long, 14 cm wide, 27 cm high, with a 11.2 cm wheelbase and 8 cm track width on both front and rear axles.
+- Hardware constraints: the system is built around two EV3 Medium Motors, the EV3 brick, and a limited battery capacity, so power draw and control aggressiveness must be balanced carefully.
+- Sensor constraints: the Pixy camera is sensitive to lighting, the ultrasonic sensors are affected by reflections and geometry, and the gyro can drift if not calibrated properly.
+- Competition constraints: the robot must comply with WRO Future Engineers rules, and the design must remain simple, robust, and reliable under repeated test runs.
+
+### Trade-offs
+- A rear-wheel drive with front-wheel steering was chosen because it offers predictable motion and simpler control compared with skid-steer or fully independent drive motors.
+- The rudder-style steering layout improves repeatability and stable cornering, but it is less aggressive in tight turning than a skid-steer system.
+- The robot prioritizes visual target tracking when the Pixy signal is strong, but it shifts to ultrasonic-based fallback behavior when the camera loses detection, which increases robustness.
+- Custom 3D-printed mounts were used to improve sensor stability and alignment, which helps maintain consistent performance during testing and competition.
+- The team chose moderate acceleration and controlled motion over maximum speed to reduce power sag, mechanical stress, and control instability.
+
+### Iteration Cycles
+- Version 1: the robot used a basic chassis with two ultrasonic sensors angled about 30° forward and the gyro placed at the front. The Pixy camera was mounted at the rear and elevated.
+- Version 2: the ultrasonic sensors were reoriented to face directly left and right, improving side-distance sensing. The Pixy camera was also tilted slightly downward for better target visibility.
+- Version 3: the gyro was moved to the center and top of the robot to reduce measurement error, and the LEDs were placed near the gyro for better illumination.
+- Final adjustment: the LED angle was slightly changed so that the light spread improved toward the left and right sides of the robot.
+- The software was also tuned experimentally through repeated test runs, with gains, thresholds, and control limits adjusted until motion became stable and repeatable.
+
+### Risk Analysis
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Pixy detection failure due to lighting or angle | Medium | High | LED illumination, threshold tuning, fallback search behavior |
+| Ultrasonic false readings from reflections | Medium | Medium | Careful sensor positioning, filtering, and control clamping |
+| Gyro drift or calibration error | Medium | High | Pre-run calibration and stable mounting near the robot center |
+| Mechanical looseness or cable interference | Medium | High | Reinforced mounts, cable routing, and vibration-resistant assembly |
+| Power drop during long or aggressive runs | Medium | Medium | Moderate motor power, controlled acceleration, and battery checks |
+| Single-point failure in a critical subsystem | Medium | High | Spare parts, fallback logic, and simple recovery behavior |
+
+### Engineering Reasoning
+- The core design goal was reliability, repeatability, and precision rather than raw speed. This is why the robot uses a stable drive-steering layout, controlled motor commands, and a layered sensing strategy.
+- The control logic uses proportional steering corrections with clamping to prevent overreaction and oscillation. The steering command is smoothed so that the robot can track targets without sudden jerks.
+- The system is intentionally designed to be resilient: when vision is unavailable, the robot shifts to ultrasonic-guided navigation rather than stopping or failing completely.
+- The mechanical and electrical layout was also chosen to support maintainability. The robot can be serviced quickly during testing and competition because sensors, motors, and wiring are organized logically and spare components are available.
+
+### Spare Parts and Pre-Run Checklist
+- Spare parts: two extra EV3 Medium Motors, extra ultrasonic sensors, extra gyro sensor, one extra Pixy camera, extra wheels and tires, spare EV3 battery, spare LED battery pack, relay, cables, connectors, and soldering tools.
+- Pre-run checklist: confirm the EV3 battery is charged, verify the LED battery pack is charged, clean the Pixy lens, check sensor ports, calibrate the gyro while the robot is still, verify relay operation through OUTPUT_A, inspect cable routing and mounts, and perform a short dry run before the actual challenge.
+
+---
+
+## �🤝 Contributing & Support
 
 This project is **open-source** and welcomes:
 - 🐛 **Bug reports** – Found an issue? Let us know!
@@ -298,10 +400,10 @@ This project is licensed under the **MIT License**, allowing free use, modificat
 
 **Built with ❤️ by ShahroodRC Team**
 
-🚀 Representing Iran at WRO 2025 International Final in Singapore 🌍
+🚀 Representing Iran at WRO 2026 National Final in Tehran 🌍
 
-See you in Singapore!
+See you in Tehran!
 
-© 2025 ShahroodRC – All rights reserved.
+© 2026 ShahroodRC – All rights reserved.
 
 </div>
