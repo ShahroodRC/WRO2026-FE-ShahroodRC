@@ -223,6 +223,58 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
+## ⚡ Power and Sense Management
+
+### 1. 🔋 Power System Layout
+- Primary power is supplied by a **LEGO EV3 rechargeable battery pack** rated at approximately **9V / 2050 mAh**.
+- The battery feeds the **EV3 Intelligent Brick**, which distributes power to motors, sensors, and the PixyCam.
+- Motor outputs are assigned to the EV3 brick's outputs for the rear drive motor and front steering motor.
+- A **relay** is used to switch the front LED indicator circuit on and off. The relay coil is driven from **motor port A** (`OUTPUT_A`), while its contacts switch the LED power path.
+- This relay wiring is kept separate from the main motor and sensor harness to reduce interference and preserve EV3 port reliability.
+- Sensor wiring follows this port assignment:
+  - `INPUT_1` → PixyCam 2.1
+  - `INPUT_2` → Gyro sensor
+  - `INPUT_3` → Ultrasonic sensor (right-side / front-right)
+  - `INPUT_4` → Ultrasonic sensor (left-side / front-left)
+
+
+### 2. 🔌 Wiring and Cabling
+- All motors and sensors are connected using **official EV3 cables** for consistent signal behavior and secure mechanical connections.
+- Cables are routed cleanly along the frame, bundled away from moving parts, and fastened to minimize vibration and accidental snags.
+- Sensor cables are kept short enough to maintain stability but long enough to allow proper placement of the PixyCam, ultrasonics, and Gyro sensor.
+- Relay wiring is routed separately from the primary motor harness and sensor cables to reduce electromagnetic noise and physical interference.
+- The front LEDs are connected through the relay contacts, while the relay coil is controlled by `OUTPUT_A`.
+- The battery pack remains accessible for quick inspection, swap-out, and power checks before each test run.
+
+### 3. ⚡ Current Strategy
+- The **2050 mAh EV3 battery pack** supports the combined load of two medium motors, three sensors, the PixyCam, and the relay-switched LED indicators with a comfortable margin.
+
+- Front LEDs draw approximately **30 mA** when active; relay actuation adds only a small control load from `OUTPUT_A`.
+- The relay is enabled only when additional illumination is needed, reducing overall current draw and limiting voltage sag.
+- The robot's control strategy emphasizes **moderate motor power** and **controlled acceleration** rather than maximum current draw.
+- Motors are often issued coasting stop commands when not actively driving, which reduces stress on the battery and helps prevent current spikes.
+- The sensor and vision system current loads are small compared to the motors, but they are included in the overall power budget to ensure stable voltage across the EV3 brick.
+
+### 4. 📡 Sensor Choices and Placement
+- **Pixy 2.1 camera** is the main vision sensor. It is mounted elevated and angled downward in a custom bracket to ensure reliable detection of field objects and path markers.
+- **Ultrasonic sensors** are used for obstacle and side-distance awareness. They are mounted at the front-left and front-right of the chassis with beams oriented roughly **±90°** to the robot centerline.
+- **Gyro sensor** is mounted centrally on top of the robot body and provides a stable heading reference, measuring yaw relative to the start orientation for closed-loop heading control.
+- **Front LED indicators** are placed near the gyro to improve field illumination and support consistent Pixy detection in varying lighting conditions.
+
+### 5. 🧪 Calibration and Verification
+- **Gyro calibration** is performed before each competition run; the robot is held still while the gyro is zeroed to reduce drift.
+- **Ultrasonic calibration** is done by checking each sensor against a fixed reference distance and using averaged readings to remove noise.
+- **Relay and LED verification** is included in the pre-run checklist: confirm that `OUTPUT_A` correctly triggers the relay and that the front LEDs switch on and off as expected.
+- **PixyCam verification** includes cleaning the lens, checking object signatures with PixyMon, and confirming detection reliability under competition lighting.
+- Regular inspection of connector seating, cable strain relief, and sensor alignment is part of the pre-run checklist.
+
+### 6. 🗺️ Diagrams and Reference
+- The full power distribution and sensor port layout is documented in `pictures/electrical-diagram/power-distribution-architecture.svg`.
+- This diagram shows the EV3 battery pack, intelligent brick, relay path for the front LEDs, and sensor port assignments.
+- Keep the diagram available during assembly, debugging, and competition setup to verify port mapping and wiring.
+
+---
+
 ## 🤝 Contributing & Support
 
 This project is **open-source** and welcomes:
