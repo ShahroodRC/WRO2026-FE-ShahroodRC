@@ -191,12 +191,24 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 ---
 
 ## Mobility & Mechanical Design
+<div align="center">
+<img src="v-photos/render_three_quarter.png" alt="Robot render — three-quarter view" width="60%"/>
+</div>
 
 ### Drive and Steering System Choices
-- Propulsion is provided by one LEGO EV3 Medium Motor driving the rear axle through a differential-style power train that turns both rear wheels together.
-- Steering is handled by a second LEGO EV3 Medium Motor operating a rudder-style front axle mechanism that turns the front wheels left and right.
+- We provide propulsion with one LEGO EV3 Medium Motor driving the rear axle through a differential-style power train that turns both rear wheels together; we chose this because it concentrates traction control on a single actuator and keeps the drivetrain simple for repeatable motion.
+- We handle steering with a second LEGO EV3 Medium Motor operating a rudder-style front axle mechanism that turns the front wheels left and right; we selected this arrangement because it cleanly separates steering from propulsion, making motion planning and recovery simpler.
 - We selected this drive/steering layout because it separates traction from steering control, simplifying motion planning and reducing the number of active failure modes.
-- Compared to skid-steer, our system avoids the unpredictable pivot behavior and wheel slip associated with differential turning. Compared to independent drive motors, it requires less complex control logic while still delivering consistent, repeatable handling.
+- We avoided a skid-steer layout because it introduces unpredictable pivot behavior and wheel slip; similarly, we did not use independent drive motors because they require more complex control logic, and instead chose this design to maintain consistent, repeatable handling.
+
+<div align="center">
+<img src="v-photos/render_front.png" alt="Robot render — front view" width="45%"/>
+<img src="v-photos/render_steer_right.png" alt="Render — steering turned right" width="45%"/>
+</div>
+
+<div align="center">
+<img src="v-photos/render_steer_left.png" alt="Render — steering turned left" width="45%"/>
+</div>
 
 ### Mechanical Structure
 - The chassis combines official LEGO EV3 structural elements with custom 3D-printed parts to create a rigid, lightweight frame.
@@ -204,23 +216,28 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 - The front axle and steering linkages are braced to minimize flex and maintain predictable steering geometry under load.
 - Cable routing is designed to stay clear of moving parts, bundled along the frame, and secured to reduce vibration and accidental interference.
 
+<div align="center">
+<img src="v-photos/render_right.png" alt="Robot render — right view" width="40%"/>
+<img src="v-photos/render_chassis.png" alt="Robot render — chassis only" width="40%"/>
+</div>
+
 ### Mounting
-- Custom printed mounts firmly position the Pixy 2.1 camera, gyro, and ultrasonic sensors so the sensing vectors remain stable under motion and do not shift during competition runs.
-- The gyro is mounted centrally on top of the robot to minimize measurement error from pitching or rolling.
-- The two ultrasonic sensors are mounted at the front-left and front-right with a 90° orientation to the centerline, providing reliable side distance sensing.
-- The Pixy camera is elevated and angled downward toward the field to ensure consistent target detection and line/object recognition.
+- We used custom printed mounts to firmly position the Pixy 2.1 camera, gyro, and ultrasonic sensors so the sensing vectors remain stable under motion and do not shift during competition runs.
+- We mounted the gyro centrally on top of the robot to minimize measurement error from pitching or rolling, because placing it near the center reduces the effect of rotational offsets on yaw readings.
+- We mounted the two ultrasonic sensors at the front-left and front-right with a 90° orientation to the centerline to provide reliable side distance sensing; we chose this placement because it yields smoother side-range readings for wall-following.
+- We elevated and angled the Pixy camera downward toward the field to ensure consistent target detection and line/object recognition, since that viewpoint improves signature size and reduces false positives.
 
 ### Torque and Speed Reasoning
 - Each EV3 Medium Motor delivers 8 N·cm nominal torque and 12 N·cm stall torque, with a top speed of 240–250 rpm.
-- This motor specification provides a strong balance between power and precision, enabling controlled acceleration while preserving the accuracy needed for line following and obstacle approach.
-- The drive train is tuned for moderate speed with high controllability rather than maximum velocity, which improves performance in the course of precise navigation tasks.
-- The steering motor is geared for smooth, repeatable wheel angles, enabling accurate turns and stable lane corrections based on sensor feedback.
-- Prioritizing reproducible motion over raw acceleration reduces mechanical stress and ensures repeatable performance across repeated competition runs.
+- We selected these motors because they provide a strong balance between power and precision, enabling controlled acceleration while preserving the accuracy needed for line following and obstacle approach.
+- We tuned the drive train for moderate speed with high controllability rather than maximum velocity because that improves performance for precise navigation tasks.
+- We geared the steering motor for smooth, repeatable wheel angles to enable accurate turns and stable lane corrections based on sensor feedback.
+- We prioritized reproducible motion over raw acceleration to reduce mechanical stress and ensure repeatable performance across many runs.
 
 ### Design Justification
-- The robot was designed for rigidity, precision, and reliability, with a clear trade-off in favor of control and repeatability.
-- Custom structural reinforcements and sensor mounts were added after testing revealed the need to reduce flex and preserve sensor alignment.
-- Multiple test sessions validated the design: the robot completed more than 50 runs with consistent handling, showing over 90% success rate in repeated mobility and navigation trials.
+- We designed the robot for rigidity, precision, and reliability, choosing control and repeatability over raw speed.
+- We added custom structural reinforcements and sensor mounts after testing revealed flex and alignment issues, because eliminating chassis flex directly improved sensor consistency and navigation accuracy.
+- We validated the design with multiple test sessions: the robot completed more than 50 runs with consistent handling, showing over 90% success rate in repeated mobility and navigation trials.
 - The result is a stable, robust system capable of accurate navigation and reproducible motion behavior for the Future Engineers challenge.
 
 ---
