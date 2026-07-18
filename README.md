@@ -192,7 +192,7 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ## Mobility & Mechanical Design
 <div align="center">
-<img src="v-photos/redered_images/redered_images/render_three_quarter.png" alt="Robot render — three-quarter view" width="60%"/>
+<img src="v-photos/redered_images/render_three_quarter.png" alt="Robot render — three-quarter view" width="60%"/>
 </div>
 
 ### Drive and Steering System Choices
@@ -364,57 +364,58 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
-## � Systems Thinking & Engineering Decisions
+## 🧠 Systems Thinking & Engineering Decisions
 
-This section summarizes the main engineering decisions behind the robot design, the relationships between subsystems, and the reasoning used to make the system robust for the Future Engineers challenge.
+This section explains the engineering logic behind the robot design, the relationships between subsystems, and the reasoning used to make the system robust for the Future Engineers challenge. Every major decision in this project was made not only to improve performance, but also to reduce uncertainty, improve repeatability, and make the robot safer and more reliable during competition.
 
-### Subsystem Interactions
-- The drive and steering subsystems are coupled through the EV3 control logic: the rear drive motor provides forward propulsion while the front steering motor changes the heading. The software converts steering targets into controlled actuator commands through a proportional controller with output limiting.
-- The vision subsystem uses the Pixy 2.1 camera to detect task-relevant objects and estimate their horizontal position and size. These measurements influence steering direction and speed during target tracking.
-- The proximity subsystem uses two ultrasonic sensors placed on the left and right sides of the robot to maintain a safe side clearance and to support fallback behavior when vision is temporarily lost.
-- The gyro subsystem continuously provides yaw-angle feedback to the EV3 brick, allowing the robot to stabilize heading and correct drift during motion.
-- The lighting subsystem uses front LEDs powered by a separate battery pack and controlled through a relay connected to OUTPUT_A. This improves visibility for the camera and makes detection more reliable in different lighting conditions.
+### 1. Constraints and Design Limitations
+- One of the main constraints in our robot is speed. When the robot moves too fast, the time available for reading and processing ultrasonic data becomes too short, which reduces the quality of reactions to walls and makes navigation less stable. This is why we designed the motion system to prioritize controlled movement over aggressive speed.
+- Lighting is another major constraint. In conditions where natural light comes from one side, the Pixy camera struggles to detect obstacles reliably. For this reason, the competition field should ideally be illuminated evenly and without strong directional sunlight. We solved this by installing front LEDs on the robot so that the environment in front of the robot remains more stable and easier for the camera to interpret under different conditions.
+- Mechanical constraints also matter: the robot must remain compact enough for the competition field while still carrying the EV3 brick, motors, sensors, and battery systems. The chassis therefore had to be rigid, lightweight, and stable enough to support consistent motion.
+- Hardware constraints include the limited battery capacity, the limited processing resources of the EV3, and the need to control several sensors and motors at the same time. These constraints forced the team to balance power, weight, response speed, and control complexity carefully.
+- Sensor constraints are also important: the Pixy camera is sensitive to lighting and angle, ultrasonic sensors can be affected by reflections and geometry, and the gyro can drift if calibration is not handled properly.
+- Competition constraints also shaped the design. The robot had to follow WRO Future Engineers rules, stay practical to build and maintain, and remain robust across repeated runs.
 
-### Constraints
-- Mechanical constraints: robot dimensions are approximately 24 cm long, 14 cm wide, 27 cm high, with a 11.2 cm wheelbase and 8 cm track width on both front and rear axles.
-- Hardware constraints: the system is built around two EV3 Medium Motors, the EV3 brick, and a limited battery capacity, so power draw and control aggressiveness must be balanced carefully.
-- Sensor constraints: the Pixy camera is sensitive to lighting, the ultrasonic sensors are affected by reflections and geometry, and the gyro can drift if not calibrated properly.
-- Competition constraints: the robot must comply with WRO Future Engineers rules, and the design must remain simple, robust, and reliable under repeated test runs.
+### 2. Subsystem Interactions and Why the Architecture Was Chosen
+- The drive and steering subsystems are tightly coupled through the EV3 control logic: the rear motor provides forward propulsion, while the front steering motor changes the heading. This separation makes the motion system easier to control and more predictable than a skid-steer layout.
+- The vision subsystem uses the Pixy 2.1 camera to detect obstacles and estimate their position. These measurements directly influence steering decisions and help the robot decide when to track an object or switch to fallback behavior.
+- The proximity subsystem uses two ultrasonic sensors on the left and right sides of the robot to maintain safe side clearance and support navigation when vision is temporarily lost. This improves the robot's ability to follow walls and avoid collisions.
+- The gyro subsystem provides heading feedback to the EV3, allowing the robot to correct drift and maintain better directional stability. This is especially important when the robot must keep a consistent course under repeated motion cycles.
+- The lighting subsystem uses front LEDs, powered separately and controlled through a relay, to improve the camera's visibility and make obstacle detection more reliable under changing light conditions.
 
-### Trade-offs
-- A rear-wheel drive with front-wheel steering was chosen because it offers predictable motion and simpler control compared with skid-steer or fully independent drive motors.
-- The rudder-style steering layout improves repeatability and stable cornering, but it is less aggressive in tight turning than a skid-steer system.
-- The robot prioritizes visual target tracking when the Pixy signal is strong, but it shifts to ultrasonic-based fallback behavior when the camera loses detection, which increases robustness.
-- Custom 3D-printed mounts were used to improve sensor stability and alignment, which helps maintain consistent performance during testing and competition.
-- The team chose moderate acceleration and controlled motion over maximum speed to reduce power sag, mechanical stress, and control instability.
+### 3. Alternative Design Choices and Justification
+- For the chassis, alternatives such as fully 3D-printed frames, metal structures, or wooden structures could be used. However, each of these has drawbacks. Fully 3D-printed parts can increase cost and fabrication complexity, metal parts add weight and may create mechanical difficulties, and wood can deform under friction, heat, or moisture. We chose LEGO structural parts because they are accessible, modular, and easy to modify. This was a major advantage because when a design flaw was discovered, the team could quickly adjust the chassis and test a new version without rebuilding the entire robot.
+- For the vision system, other cameras could also be used, but they usually require more processing power or higher cost. We selected the Pixy 2.1 because it performs object and obstacle processing internally and sends only the final results to the EV3. This reduces the computing burden on the main processor and allows a higher effective frame rate, which improves reaction speed. A different camera would be possible, but it would usually require more code, more processing on the main controller, and greater design complexity.
+- For the main processor, there is no practical replacement for the EV3 in this robot because it is the most compatible and straightforward platform for controlling the sensors, motors, and power interfaces used here. Its main disadvantage is that it is relatively large and heavy, which makes it less suitable for extremely compact and ultra-light robots.
+- We also considered alternative motion layouts. A skid-steer system could provide aggressive turning, but it would introduce more wheel slip and less predictable motion. Independent drive motors would offer more control freedom, but they would also increase coding complexity and create more failure modes. The chosen rear-drive and front-steer layout was selected because it offers simpler control, more repeatable motion, and better stability for precise navigation.
 
-### Iteration Cycles
-- Version 1: the robot used a basic chassis with two ultrasonic sensors angled about 30° forward and the gyro placed at the front. The Pixy camera was mounted at the rear and elevated.
-- Version 2: the ultrasonic sensors were reoriented to face directly left and right, improving side-distance sensing. The Pixy camera was also tilted slightly downward for better target visibility.
-- Version 3: the gyro was moved to the center and top of the robot to reduce measurement error, and the LEDs were placed near the gyro for better illumination.
-- Final adjustment: the LED angle was slightly changed so that the light spread improved toward the left and right sides of the robot.
-- The software was also tuned experimentally through repeated test runs, with gains, thresholds, and control limits adjusted until motion became stable and repeatable.
+### 4. Experimental Validation and Iteration Cycles
+- We tested the robot experimentally on the field rather than relying only on theory. Each subsystem was evaluated separately: motors, sensors, and control logic were tested one by one to confirm that each component performed its intended task correctly.
+- We used a strict validation standard. A subsystem was considered successful only when it completed its task correctly for 10 consecutive runs without error. Once that level was reached, it was fixed into the robot and used confidently in future runs.
+- We applied this same logic to all algorithms, including steering control, wall-following behavior, obstacle detection, and fallback strategies. This helped us ensure that the final system was not only functional in principle, but also dependable under real competition conditions.
+- The design evolved through several iterations. Version 1 used a simpler chassis and a rougher sensor layout. Version 2 improved the orientation of the ultrasonic sensors and adjusted the Pixy camera angle. Version 3 moved the gyro closer to the robot center and improved LED positioning. The final adjustment refined the LED angle and control parameters so the robot became more stable and repeatable.
+- The software was also tuned experimentally through repeated test runs. Gains, thresholds, and control limits were adjusted until the motion became smooth and consistent.
 
-### Risk Analysis
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Pixy detection failure due to lighting or angle | Medium | High | LED illumination, threshold tuning, fallback search behavior |
-| Ultrasonic false readings from reflections | Medium | Medium | Careful sensor positioning, filtering, and control clamping |
-| Gyro drift or calibration error | Medium | High | Pre-run calibration and stable mounting near the robot center |
-| Mechanical looseness or cable interference | Medium | High | Reinforced mounts, cable routing, and vibration-resistant assembly |
-| Power drop during long or aggressive runs | Medium | Medium | Moderate motor power, controlled acceleration, and battery checks |
-| Single-point failure in a critical subsystem | Medium | High | Spare parts, fallback logic, and simple recovery behavior |
-
-### Engineering Reasoning
-- The core design goal was reliability, repeatability, and precision rather than raw speed. This is why the robot uses a stable drive-steering layout, controlled motor commands, and a layered sensing strategy.
-- The control logic uses proportional steering corrections with clamping to prevent overreaction and oscillation. The steering command is smoothed so that the robot can track targets without sudden jerks.
-- The system is intentionally designed to be resilient: when vision is unavailable, the robot shifts to ultrasonic-guided navigation rather than stopping or failing completely.
-- The mechanical and electrical layout was also chosen to support maintainability. The robot can be serviced quickly during testing and competition because sensors, motors, and wiring are organized logically and spare components are available.
+### 5. Risk Reduction and Robustness Strategies
+- One of the most effective ways to reduce risk is to lower the robot speed. Slower movement gives the sensors more time to update, the control loop more time to interpret data, and the motors more time to respond accurately. This reduces the chance of wall collisions and unstable behavior.
+- We also reduced risk by combining multiple sensing methods rather than relying on a single source. Ultrasonic sensors provide distance information for wall-following, while the gyro adds heading stability and improves motion consistency. This produces more reliable results than using either sensor alone.
+- The software includes fallback behavior so that the robot does not fail completely when the main perception method is temporarily weak. If the camera loses the target, the robot can continue with wall-following or search behavior instead of stopping abruptly.
+- We also included pre-run verification. Before the main program starts, the robot checks the health of the sensors and actuators and confirms that the required subsystems are operating correctly. If a problem is detected, the robot avoids unsafe motion until the issue is resolved.
+- The lighting system is part of the risk reduction strategy. By controlling the illumination in front of the robot with LEDs, we reduce the effect of changing external light and improve obstacle detection consistency.
+- The overall design also emphasizes maintainability. Spare parts, organized wiring, structured sensor mounting, and clear pre-run checks make the robot easier to repair and safer to use during testing and competition.
 
 ### Spare Parts and Pre-Run Checklist
 - Spare parts: two extra EV3 Medium Motors, extra ultrasonic sensors, extra gyro sensor, one extra Pixy camera, extra wheels and tires, spare EV3 battery, spare LED battery pack, relay, cables, connectors, and soldering tools.
 - Pre-run checklist: confirm the EV3 battery is charged, verify the LED battery pack is charged, clean the Pixy lens, check sensor ports, calibrate the gyro while the robot is still, verify relay operation through OUTPUT_A, inspect cable routing and mounts, and perform a short dry run before the actual challenge.
 
+| Risk | Why it matters | Mitigation |
+|------|----------------|------------|
+| Pixy detection failure due to lighting or angle | The robot may lose obstacle information at a critical moment | LED illumination, threshold tuning, and fallback search behavior |
+| Ultrasonic false readings from reflections | The robot may misinterpret wall distance and drift off course | Careful sensor positioning, filtering, and control clamping |
+| Gyro drift or calibration error | Heading estimation may become unstable | Pre-run calibration and stable mounting near the robot center |
+| Mechanical looseness or cable interference | Sensor alignment and motion stability may be affected | Reinforced mounts, organized cabling, and vibration-resistant assembly |
+| Power drop during long or aggressive runs | Performance may degrade during the mission | Moderate motor power, controlled acceleration, and battery checks |
+| Single-point failure in a critical subsystem | One weak component could compromise the full run | Spare parts, fallback logic, and simple recovery behavior |
 ---
 
 ## �🤝 Contributing & Support
