@@ -8,7 +8,7 @@
 
 **ShahroodRC** – *Future Engineers 2026*  
 🏆 **1st Place – Iran National WRO 2025**  
-🌍 **Heading to Isfahan National Final (26-28 Nov 2025)**  
+🌍 **Heading to Tehran National Final (26-28 Nov 2025)**  
 A fully autonomous LEGO EV3 robot with vision-based obstacle avoidance and precision navigation.
 
 ![Status](https://img.shields.io/badge/Status-Competition%20Ready-brightgreen?style=flat-square)
@@ -205,8 +205,8 @@ This first prototype used the EV3 platform with:
 Why this design? The goal was to get a working system on the field quickly and use the color sensor as a simple, reliable lap counter. The limitations were also clear: the robot was slow, the Pixy 1 vision was inconsistent on obstacles, and the system relied too much on floor color detection rather than robust obstacle awareness.
 
 <div align="center">
-<img src="v-photos/version-1/version-1-front.jpg" alt="Version 1 front view" width="45%" />
-<img src="v-photos/version-1/version-1-right.jpg" alt="Version 1 right view" width="45%" />
+<img src="v-photos/design-iterations/version-1/version-1-front.jpg" alt="Version 1 front view" width="45%" />
+<img src="v-photos/design-iterations/version-1/version-1-right.jpg" alt="Version 1 right view" width="45%" />
 </div>
 
 ### Version 2 – sensor upgrade and chassis exploration
@@ -220,8 +220,8 @@ In the second version we focused on improving sensing and motion control:
 Why this design? We needed more reliable perception and better heading control. The Pixy 2.1 and gyro were stronger choices, but the chassis geometry still needed refinement: the front-to-rear spacing was too large and the left-right track too narrow, which prevented the robot from moving as accurately as required.
 
 <div align="center">
-<img src="v-photos/version-2/version-2-front.jpg" alt="Version 2 front view" width="45%" />
-<img src="v-photos/version-2/version-2-left.jpg" alt="Version 2 left view" width="45%" />
+<img src="v-photos/design-iterations/version-2/version-2-front.jpg" alt="Version 2 front view" width="45%" />
+<img src="v-photos/design-iterations/version-2/version-2-left.jpg" alt="Version 2 left view" width="45%" />
 </div>
 
 ### Electronic Prototype – parallel non-EV3 path
@@ -234,8 +234,8 @@ While building Version 3, we also began a separate electronic robot project to o
 Why this path? We recognized that EV3 imposed hard limits on processing speed, sensor variety, and overall agility. The electronic prototype is intended for future competition use, but it is still under development and not yet ready for the Obstacle Challenge.
 
 <div align="center">
-<img src="v-photos/electronic-robot/electronic-robot-three-quarter.jpg" alt="Electronic robot prototype" width="45%" />
-<img src="v-photos/electronic-robot/electronic-robot-board.jpg" alt="Electronic robot board" width="45%" />
+<img src="v-photos/design-iterations/electronic-robot/electronic-robot-three-quarter.jpg" alt="Electronic robot prototype" width="45%" />
+<img src="v-photos/design-iterations/electronic-robot/electronic-robot-board.jpg" alt="Electronic robot board" width="45%" />
 </div>
 
 ### Version 3 – competition-ready EV3 robot
@@ -308,9 +308,11 @@ Why this version? It represents the design that learned from the earlier prototy
 
 ### 1. 🔋 Power System Layout
 - Primary power is supplied by the **EV3 battery pack** (LEGO EV3 rechargeable battery pack) rated at approximately **9V / 2050 mAh**.
-- The EV3 battery pack is installed inside the EV3 brick and powers the brick itself, the two medium motors, the gyro sensor, both ultrasonic sensors, and the Pixy 2.1 camera (Pixy is connected to EV3 sensor port and draws its 5V supply from the EV3).
-- The EV3 brick distributes power to these components through its built-in ports; there is no separate custom power distribution harness for the main drive and sensing system.
+- The EV3 battery pack is installed inside the EV3 brick and powers the EV3 brick itself, the two medium motors, the gyro sensor, both ultrasonic sensors, and the Pixy 2.1 camera.
+- The EV3 brick is the central power distribution hub. Unlike Arduino/ESP32/Raspberry Pi systems that often require a separate custom power harness, this EV3-based robot uses the brick’s built-in ports and internal regulators to provide safe and reliable power.
+- The EV3 supplies 9V directly to the motor outputs and uses an internal regulator to provide 5V for sensors. This is why the motors and sensors operate from different voltage domains even though they are both connected to the same EV3 controller.
 - A separate **LED battery pack** is dedicated only to the front LED indicators and is not part of the EV3 power bus. The LED pack consists of three 3.7V cells connected in **parallel** (each 2000 mAh), giving a total capacity of ~**6000 mAh** while keeping the pack voltage at ~3.7V.
+- This separate LED battery pack keeps the LED lighting load isolated from the EV3 battery, which reduces interference and ensures the EV3 brick remains focused on motors and sensors.
 - Motor outputs are assigned as:
   - `OUTPUT_B` → Medium motor for front steering
   - `OUTPUT_D` → Medium motor for rear drive
@@ -320,6 +322,7 @@ Why this version? It represents the design that learned from the earlier prototy
   - `INPUT_2` → Gyro sensor
   - `INPUT_3` → Ultrasonic sensor (right-side / front-right)
   - `INPUT_4` → Ultrasonic sensor (left-side / front-left)
+- The port assignments reflect function: separate outputs for steering and propulsion, and a dedicated output for relay control so the LED system does not interfere with drive control.
 
 <div align="center">
 <img src="electronic/ev3-port-connection-layout.png" alt="EV3 port connection layout" width="70%"/>
@@ -328,19 +331,29 @@ Why this version? It represents the design that learned from the earlier prototy
 ### 2. 🔌 Wiring and Cabling
 - Wherever possible we use **official LEGO EV3 cables** for signal integrity and robust connectors.
 - The Gyro and two EV3 ultrasonic sensors use official EV3 sensor cables directly to EV3 sensor ports.
-- The Pixy 2.1 does not use the official LEGO sensor connector, so we built a custom cable to adapt Pixy to the EV3 sensor port and I2C protocol. The wiring approach we used:
+- The Pixy 2.1 camera does not natively support the official LEGO EV3 sensor connector, so we built a custom cable to adapt it to the EV3 sensor port and I2C protocol. The wiring approach we used:
   - We cut a spare official EV3 sensor cable and exposed the six internal conductors (red, blue, yellow, green, white, black).
-  - We insulated and taped the unused white and black wires because Pixy wiring does not require them.
+  - We insulated and taped the unused white and black wires because Pixy does not need them.
   - We used the four wires **red, blue, yellow, green** to connect Pixy 2.1 and mapped them to the Pixy I2C interface so the EV3 can communicate with Pixy over I2C.
-  - The Pixy wiring photo shows this custom cable and connector in `v-photos/components/pixy-cam-wiring.jpg`.
 
-*- Relay and LED wiring (custom output adaptation): to let EV3 treat the relay like a motor output we adapted an EV3 output cable as follows (the physical wiring is shown in `electronic/custom-cable-detail-for-light.jpg`):*
+  <div align="center">
+  <img src="v-photos/components/pixy-cam-wiring.jpg" alt="Pixy 2.1 custom wiring to EV3" width="70%"/>
+  </div>
+
+- This custom wiring allows the Pixy camera to work like other EV3 sensors from the brick’s perspective, even though the Pixy uses a non-standard connector.
+
+- The relay and LED wiring also uses a custom EV3 cable adaptation. Because EV3 output ports expect a motor-like device, we adapted an official EV3 output cable so the relay behaves like a motor to the brick:
   - We cut another official EV3 output cable and connected two conductors to the relay coil.
-  - The remaining two conductors that would normally provide encoder/motor feedback were tied together with a resistor to mimic a motor's expected load/behavior so the EV3 treats the relay as a motor-like device. The unused conductors were insulated and secured.
+  - The remaining two conductors that would normally provide encoder feedback were tied together with a resistor to mimic a motor's expected load. This trick makes the EV3 treat the relay as a valid motor-like load.
+  - The unused conductors were insulated and securely taped.
+
+  <div align="center">
+  <img src="electronic/custom-cable-detail-for-light.jpg" alt="Custom EV3 cable adapted to relay for LED control" width="70%"/>
+  </div>
 
 **Pin Connections (for our EV3→relay custom cable):**
 
- - **White (Pin 1)** → Relay coil positive (9V when motor/output is active)
+ - **White (Pin 1)** → Relay coil positive (9V when output is active)
  - **Black (Pin 2)** → Relay and LED ground
  - **Red (Pin 3)** → Relay common / power reference
  - **Green (Pin 4)** → Relay coil negative / ground
@@ -353,7 +366,7 @@ Why this version? It represents the design that learned from the earlier prototy
  - Common contact → LED- (battery ground terminal)
 
 ### 3. ⚡ Power Budget (summary)
-The sensors and vision system have low power requirements compared to the motors. Below is a concise budget table showing typical voltages, currents, and approximate power per component.
+The sensors and vision system have low power requirements compared to the motors, which is why we can rely on the EV3 battery pack without using a separate power distribution harness for the main robot electronics.
 
 | Component | Supply | Typical current | Typical power |
 |---|---:|---:|---:|
@@ -365,22 +378,22 @@ The sensors and vision system have low power requirements compared to the motors
 
 Notes:
 - Sensor currents are small and do not present a load problem for the EV3 battery pack.
-- The motors are the primary consumers of energy; stall currents are large and are why we design motion profiles to avoid prolonged stall conditions.
+- The EV3 uses a 9V motor rail for the medium motors and a regulated 5V rail for the sensors, which is why the motors and sensors are powered from different voltage sources within the brick.
+- The separate LED battery pack isolates the lighting load and prevents LED switching from affecting the EV3 brick’s main power supply.
+- The main power risk is motor stall current, so we design motion profiles to avoid prolonged stall conditions and preserve battery life.
 
 ### 4. 📡 Sensor Choices and Placement
 - **Pixy 2.1 camera** is mounted above and slightly rearward on the robot, angled about **35° downward toward the field**. We chose this location so the Pixy can see the path ahead without having its view blocked by the robot body.
-- The downward tilt keeps the Pixy focused on the field and avoids looking at objects outside the arena, which reduces false detections.
-- **Gyro sensor** is mounted centrally on top of the robot. We placed it here for two reasons:
-  - It is kept away from strong electromagnetic sources like the battery pack, camera, and LEDs.
-  - It is nearer the robot's rotation center, so the heading output is more stable and easier to use for closed-loop control.
-- **Ultrasonic sensors** are mounted at the front-left and front-right, each oriented roughly **perpendicular to the robot centerline**. We positioned them slightly ahead of the robot center so they can see the walls in advance and accurately estimate the robot's distance to the field boundaries.
-- We use two ultrasonic sensors because the robot must handle both turning directions around the field walls. The right sensor is used during clockwise motion, and the left sensor is used during counter-clockwise motion.
-- These sensors also compare left/right distances at the beginning of the Obstacle Challenge to determine whether the robot will turn clockwise or counter-clockwise around the arena.
-- In the Open Challenge, the same left/right comparison in the first section helps detect which wall segment is the central 1-meter wall and choose the correct turning direction.
+- The downward tilt keeps the Pixy focused on the field and avoids looking at objects outside the arena, reducing false detections.
+- **Gyro sensor** is mounted centrally on top of the robot. This placement was chosen because it keeps the gyro away from strong electromagnetic sources and near the robot's rotation center, improving heading stability.
+- **Ultrasonic sensors** are mounted at the front-left and front-right, each oriented roughly **perpendicular to the robot centerline**. We positioned them slightly ahead of the robot center so they can see field walls in advance and accurately estimate distance.
+- We use two ultrasonic sensors because the robot must handle both turning directions around the field walls. During clockwise motion, the right sensor is prioritized; during counter-clockwise motion, the left sensor is prioritized.
+- These sensors also compare left/right distances at the beginning of the Obstacle Challenge to determine whether the robot will turn clockwise or counter-clockwise.
+- In the Open Challenge, the same comparison helps detect which wall segment is the central 1-meter wall and choose the correct turning direction.
 - **Front LED indicators** are mounted above the EV3 brick near the center and facing forward. This location provides the most effective illumination of the path and obstacles.
 - The LEDs are angled slightly outward to light the side edges of the robot and the obstacles, ensuring the Pixy camera keeps the object visible until the last moment during obstacle passage.
-- The **EV3 battery pack** is installed inside the EV3 brick near the robot center, minimizing its effect on the center of gravity and keeping the weight distribution even across the wheels.
-- The separate **LED battery pack** is mounted on top of the EV3 brick near the center so its mass is balanced and its power source stays dedicated to the LEDs.
+- The **EV3 battery pack** is installed inside the EV3 brick near the robot center, minimizing its effect on the center of gravity and keeping weight distribution even across the wheels.
+- The separate **LED battery pack** is mounted on top of the EV3 brick near the center so its weight is balanced and its power source remains dedicated to the LEDs.
 
 ### 5. 🧪 Calibration and Verification
 - **Gyro calibration** is performed before each competition run; the robot is held still while the gyro is zeroed to reduce drift.
@@ -390,10 +403,10 @@ Notes:
 - Regular inspection of connector seating, cable strain relief, and sensor alignment is part of the pre-run checklist.
 
 ### 6. 🗺️ Diagrams and Reference
-- The full power distribution and sensor port layout is documented in `pictures\electrical-diagram\ev3-port-connection-layout.png`.
-- This diagram shows the EV3 battery pack, intelligent brick, relay path for the front LEDs, and sensor port assignments.
-- Keep the diagram available during assembly, debugging, and competition setup to verify port mapping and wiring.
-- The EV3 port connection layout image provides a visual reference for how camera, gyro, ultrasonics, motors, and relay connect to the EV3 ports.
+- The full power distribution and sensor port layout is documented in `electronic/ev3-port-connection-layout.png`.
+- The Pixy wiring photo is available at `v-photos/components/pixy-cam-wiring.jpg`.
+- The custom EV3 output cable-to-relay wiring photo is available at `electronic/custom-cable-detail-for-light.jpg`.
+- These diagrams provide a visual reference for how the EV3 battery, sensors, motors, relay, and LED system are connected.
 
 ---
 
