@@ -308,46 +308,64 @@ Why this version? It represents the design that learned from the earlier prototy
 
 ### 1. 🔋 Power System Layout
 - Primary power is supplied by the **EV3 battery pack** (LEGO EV3 rechargeable battery pack) rated at approximately **9V / 2050 mAh**.
-- The EV3 battery pack is installed inside the EV3 brick and powers the brick itself, the two medium motors, the Pixy 2.1 camera, the gyro sensor, and both ultrasonic sensors.
+- The EV3 battery pack is installed inside the EV3 brick and powers the brick itself, the two medium motors, the gyro sensor, both ultrasonic sensors, and the Pixy 2.1 camera (Pixy is connected to EV3 sensor port and draws its 5V supply from the EV3).
 - The EV3 brick distributes power to these components through its built-in ports; there is no separate custom power distribution harness for the main drive and sensing system.
-- A separate **LED battery pack** is also mounted on the EV3 brick, but it is not part of the EV3 power bus. It is dedicated only to the front LED indicators and powers them through the relay switching circuit.
+- A separate **LED battery pack** is dedicated only to the front LED indicators and is not part of the EV3 power bus. The LED pack consists of three 3.7V cells connected in **parallel** (each 2000 mAh), giving a total capacity of ~**6000 mAh** while keeping the pack voltage at ~3.7V.
 - Motor outputs are assigned as:
-  - `OUTPUT_B` → Medium motor for rear drive
-  - `OUTPUT_D` → Medium motor for front steering
-  - `OUTPUT_A` → Relay coil for LED power switching
+  - `OUTPUT_B` → Medium motor for front steering
+  - `OUTPUT_D` → Medium motor for rear drive
+  - `OUTPUT_A` → Relay coil control (used to switch the LED battery pack)
 - Sensor inputs are assigned as:
   - `INPUT_1` → PixyCam 2.1
   - `INPUT_2` → Gyro sensor
   - `INPUT_3` → Ultrasonic sensor (right-side / front-right)
   - `INPUT_4` → Ultrasonic sensor (left-side / front-left)
-- The EV3 port connection layout image shows exactly how Pixy, gyro, ultrasonics, motors, and relay connect to the EV3 brick.
 
 <div align="center">
-<img src="pictures/electrical-diagram/ev3-port-connection-layout.png" alt="EV3 port connection layout" width="70%"/>
+<img src="electronic/ev3-port-connection-layout.png" alt="EV3 port connection layout" width="70%"/>
 </div>
 
 ### 2. 🔌 Wiring and Cabling
-- All signal and power connections use **official LEGO EV3 cables**; no custom wiring harnesses are used.
-- The Pixy 2.1 camera and sensors use dedicated EV3 sensor cables, while the motors and relay use EV3 output cables.
-- Cables are routed cleanly along the frame, bundled away from moving parts, and secured to minimize vibration and accidental snags.
-- Sensor cables are kept short enough to remain stable but long enough to allow proper positioning of the PixyCam, ultrasonic sensors, and gyro.
-- Relay wiring is routed separately from the primary motor harness and sensor cables to reduce electromagnetic noise and physical interference.
-- The front LEDs are powered by the separate **LED battery pack**, and their current flows through the relay contacts.
-- The relay coil is driven by `OUTPUT_A` on the EV3 brick, so the EV3 can switch the LED supply on or off without carrying the LED current itself.
-- The LED battery pack is otherwise isolated from the EV3 power bus; only the relay control signal is connected to the EV3.
-- The battery pack remains accessible for quick inspection, swap-out, and power checks before each test run.
+- Wherever possible we use **official LEGO EV3 cables** for signal integrity and robust connectors.
+- The Gyro and two EV3 ultrasonic sensors use official EV3 sensor cables directly to EV3 sensor ports.
+- The Pixy 2.1 does not use the official LEGO sensor connector, so we built a custom cable to adapt Pixy to the EV3 sensor port and I2C protocol. The wiring approach we used:
+  - We cut a spare official EV3 sensor cable and exposed the six internal conductors (red, blue, yellow, green, white, black).
+  - We insulated and taped the unused white and black wires because Pixy wiring does not require them.
+  - We used the four wires **red, blue, yellow, green** to connect Pixy 2.1 and mapped them to the Pixy I2C interface so the EV3 can communicate with Pixy over I2C.
+  - The Pixy wiring photo shows this custom cable and connector in `v-photos/components/pixy-cam-wiring.jpg`.
 
-### 3. ⚡ Current Strategy
-- The **2050 mAh EV3 battery pack** supports the combined load of two medium motors, three sensors, and the PixyCam with a comfortable margin.
-- The separate **LED battery pack** powers only the front LED indicators and keeps LED load off the main EV3 power bus.
-- The front LEDs are switched by a relay whose coil is controlled by `OUTPUT_A`; when `OUTPUT_A` is activated, the relay closes and allows the LED battery pack to feed the LEDs.
-- When `OUTPUT_A` is deactivated, the relay opens and disconnects the LED battery pack from the LEDs, so the LEDs turn off.
-- Front LEDs draw approximately **30 mA** when active; relay actuation adds only a small control load from `OUTPUT_A`.
-- This design keeps the LED power path separate from the EV3 brick while still allowing software control of the LEDs through the EV3.
-- The robot's control strategy emphasizes **moderate motor power** and **controlled acceleration** rather than maximum current draw.
-- Motors are often issued coasting stop commands when not actively driving, which reduces stress on the battery and helps prevent current spikes.
-- The sensor and vision system current loads are small compared to the motors, but they are included in the overall power budget to ensure stable voltage across the EV3 brick.
-- Because the EV3 battery pack is centered on the robot, the weight is distributed evenly across the wheels and does not create handling problems during long runs.
+*- Relay and LED wiring (custom output adaptation): to let EV3 treat the relay like a motor output we adapted an EV3 output cable as follows (the physical wiring is shown in `electronic/custom-cable-detail-for-light.jpg`):*
+  - We cut another official EV3 output cable and connected two conductors to the relay coil.
+  - The remaining two conductors that would normally provide encoder/motor feedback were tied together with a resistor to mimic a motor's expected load/behavior so the EV3 treats the relay as a motor-like device. The unused conductors were insulated and secured.
+
+**Pin Connections (for our EV3→relay custom cable):**
+
+ - **White (Pin 1)** → Relay coil positive (9V when motor/output is active)
+ - **Black (Pin 2)** → Relay and LED ground
+ - **Red (Pin 3)** → Relay common / power reference
+ - **Green (Pin 4)** → Relay coil negative / ground
+ - **Yellow (Pin 5)** → Insulated (unused encoder feedback wire)
+ - **Blue (Pin 6)** → Insulated (unused encoder feedback wire)
+
+**Relay Output wiring:**
+
+ - Normally-Open contact → LED+ (battery positive terminal)
+ - Common contact → LED- (battery ground terminal)
+
+### 3. ⚡ Power Budget (summary)
+The sensors and vision system have low power requirements compared to the motors. Below is a concise budget table showing typical voltages, currents, and approximate power per component.
+
+| Component | Supply | Typical current | Typical power |
+|---|---:|---:|---:|
+| Gyro sensor | 5 V (from EV3) | 15–20 mA | 75–100 mW |
+| Ultrasonic sensor (each) | 5 V (from EV3) | 20–25 mA | 100–125 mW |
+| Pixy 2.1 camera | 5 V (from EV3) | 140 mA | 0.7 W |
+| EV3 Medium Motor (idle) | 9 V (from EV3) | ~80 mA | ~0.72 W |
+| EV3 Medium Motor (stalled) | 9 V (from EV3) | ~800 mA | ~7.2 W |
+
+Notes:
+- Sensor currents are small and do not present a load problem for the EV3 battery pack.
+- The motors are the primary consumers of energy; stall currents are large and are why we design motion profiles to avoid prolonged stall conditions.
 
 ### 4. 📡 Sensor Choices and Placement
 - **Pixy 2.1 camera** is mounted above and slightly rearward on the robot, angled about **35° downward toward the field**. We chose this location so the Pixy can see the path ahead without having its view blocked by the robot body.
