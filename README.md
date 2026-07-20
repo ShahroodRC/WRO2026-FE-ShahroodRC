@@ -45,52 +45,13 @@ ShahroodRC blends "Shahrood" (our hometown in Iran, symbolizing resilience like 
 ## Table of Contents
 
 - [👥 The Team](#-the-team)
-- [🏆 National Championship Victory](#-national-championship-victory)
-- [🎯 Mission Overview for WRO Future Engineers Rounds](#-mission-overview-for-wro-future-engineers-rounds)
-- [📸 Pictures](#-pictures)
-- [🎬 Videos](#-videos)
-- [📱 Randomizer App](#-randomizer-app)
-- [🔄 Our Path – Platform Evolution](#-our-path--platform-evolution)
-- [🔄 Design Evolution & Iteration History](#-design-evolution--iteration-history)
-- [📊 Performance Metrics & Statistics](#-performance-metrics--statistics)
-- [🤖 Robot Components Overview](#-robot-components-overview)
-- [💻 Code For Each Component](#-code-for-each-component)
-    - [🔄 Drive Motor Code](#-drive-motor-code)
-    - [🎯 Steering Motor Code](#-steering-motor-code)
-    - [📷 Pixy Camera Code](#-pixy-camera-code)
-    - [🌈 Color Sensor Code](#-color-sensor-code)
-    - [💡 LED Indicator Code](#-led-indicator-code)
-    - [📏 Ultrasonic Sensor Code](#-ultrasonic-sensor-code)
-    - [🔘 Button Control Code](#-button-control-code)
-    - [⚡ Main Control Flow](#-main-control-flow)
-- [🚗 Mobility Management](#-mobility-management)
-    - [1. 📍 Introduction to Mobility System](#1--introduction-to-mobility-system)
-    - [2. ⚙️ Motors and Actuators](#2-️-motors-and-actuators)
-    - [3. 📡 Sensor Integration for Mobility](#3--sensor-integration-for-mobility)
-    - [4. 🎮 Mobility Control Algorithms](#4--mobility-control-algorithms)
-    - [5. ⚡ Energy Management for Mobility](#5--energy-management-for-mobility)
-    - [6. 🔗 System Integration for Mobility](#6--system-integration-for-mobility)
-    - [7. 🧪 Testing and Optimization](#7--testing-and-optimization)
-    - [8. ✅ Conclusion](#8--conclusion)
+- [🏆 National Championship Victory & International Success](#-national-championship-victory--international-success)
+- [🚀 Robot Progress Journey](#-robot-progress-journey)
+- [⚙️ Mobility & Mechanical Design](#️-mobility--mechanical-design)
 - [⚡ Power and Sense Management](#-power-and-sense-management)
-    - [1. 🔋 Power Supply and Distribution](#1--power-supply-and-distribution)
-    - [2. 📊 Power Consumption Overview](#2--power-consumption-overview)
-    - [3. 📡 Sensor Architecture and Management](#3--sensor-architecture-and-management)
-    - [4. 🔗 Wiring and Safety](#4--wiring-and-safety)
-    - [5. 🔍 Diagnostics and Monitoring](#5--diagnostics-and-monitoring)
-    - [6. ⚙️ Optimization Techniques](#6-️-optimization-techniques)
-    - [7. ✅ Conclusion](#7--conclusion)
-- [🚧 Obstacle Management](#-obstacle-management)
-    - [🏁 Qualification Round (Open Challenge)](#-qualification-round-open-challenge)
-    - [🏆 Final Round with Obstacle Avoidance (Obstacle Challenge)](#-final-round-with-obstacle-avoidance-obstacle-challenge)
-- [🏗️ Robot Assembly Guide](#️-robot-assembly-guide)
 - [🧠 Software Architecture & Obstacle Strategy](#-software-architecture--obstacle-strategy)
-- [🧠 Systems Thinking & Engineering Decisions](#-systems-thinking--engineering-decisions)
-- [🛠️ Software Setup & Installation](#️-software-setup--installation)
-- [🔧 Sensor Calibration Guide](#-sensor-calibration-guide)
-- [🔴 Problems and Solutions](#-problems-and-solutions)
-- [💰 Cost Report](#-cost-report)
-- [📁 Repository Structure](#-repository-structure)
+- [💡 Systems Thinking & Engineering Decisions](#-systems-thinking--engineering-decisions)
+- [📱 Randomizer App](#-randomizer-app)
 - [🤝 Contributing & Support](#-contributing--support)
 - [📖 License](#-license)
 
@@ -190,7 +151,7 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
-## Robot Progress Journey
+## 🚀 Robot Progress Journey
 
 A reason-driven timeline of the robot's development through four design stages. Each version reflects a clear decision: what we learned, what we improved, and why the next stage was needed.
 
@@ -252,51 +213,51 @@ Why this version? It represents the design that learned from the earlier prototy
 <img src="v-photos/robot-top.jpg" alt="Version 3 top view" width="45%" />
 </div>
 
-## Mobility & Mechanical Design
+## ⚙️ Mobility & Mechanical Design
 <div align="center">
-<img src="v-photos/redered_images/render_three_quarter.png" alt="Robot render — three-quarter view" width="60%"/>
+<img src="v-photos/rendered_images/render_three_quarter.png" alt="Robot render — three-quarter view" width="60%"/>
 </div>
 
-### Drive and Steering System Choices
+### 1. 🔄 Drive and Steering System Choices
 - We provide propulsion with one LEGO EV3 Medium Motor driving the rear axle through a differential-style power train that turns both rear wheels together; we chose this because it concentrates traction control on a single actuator and keeps the drivetrain simple for repeatable motion.
 - We handle steering with a second LEGO EV3 Medium Motor operating a rudder-style front axle mechanism that turns the front wheels left and right; we selected this arrangement because it cleanly separates steering from propulsion, making motion planning and recovery simpler.
 - We selected this drive/steering layout because it separates traction from steering control, simplifying motion planning and reducing the number of active failure modes.
 - We avoided a skid-steer layout because it introduces unpredictable pivot behavior and wheel slip; similarly, we did not use independent drive motors because they require more complex control logic, and instead chose this design to maintain consistent, repeatable handling.
 
 <div align="center">
-<img src="v-photos/redered_images/render_front.png" alt="Robot render — front view" width="45%"/>
-<img src="v-photos/redered_images/render_steer_right.png" alt="Render — steering turned right" width="45%"/>
+<img src="v-photos/rendered_images/render_front.png" alt="Robot render — front view" width="45%"/>
+<img src="v-photos/rendered_images/render_steer_right.png" alt="Render — steering turned right" width="45%"/>
 </div>
 
 <div align="center">
-<img src="v-photos/redered_images/render_steer_left.png" alt="Render — steering turned left" width="45%"/>
+<img src="v-photos/rendered_images/render_steer_left.png" alt="Render — steering turned left" width="45%"/>
 </div>
 
-### Mechanical Structure
+### 2. 🏗️ Mechanical Structure
 - The chassis combines official LEGO EV3 structural elements with custom 3D-printed parts to create a rigid, lightweight frame.
 - A reinforced rear axle and a low-mounted drive train keep the center of gravity low, improving stability in straight-line motion and during cornering.
 - The front axle and steering linkages are braced to minimize flex and maintain predictable steering geometry under load.
 - Cable routing is designed to stay clear of moving parts, bundled along the frame, and secured to reduce vibration and accidental interference.
 
 <div align="center">
-<img src="v-photos/redered_images/render_right.png" alt="Robot render — right view" width="40%"/>
-<img src="v-photos/redered_images/render_chassis.png" alt="Robot render — chassis only" width="40%"/>
+<img src="v-photos/rendered_images/render_right.png" alt="Robot render — right view" width="40%"/>
+<img src="v-photos/rendered_images/render_chassis.png" alt="Robot render — chassis only" width="40%"/>
 </div>
 
-### Mounting
+### 3. 📍 Mounting
 - We used custom printed mounts to firmly position the Pixy 2.1 camera, gyro, and ultrasonic sensors so the sensing vectors remain stable under motion and do not shift during competition runs.
 - We mounted the gyro centrally on top of the robot to minimize measurement error from pitching or rolling, because placing it near the center reduces the effect of rotational offsets on yaw readings.
 - We mounted the two ultrasonic sensors at the front-left and front-right with a 90° orientation to the centerline to provide reliable side distance sensing; we chose this placement because it yields smoother side-range readings for wall-following.
 - We elevated and angled the Pixy camera downward toward the field to ensure consistent target detection and line/object recognition, since that viewpoint improves signature size and reduces false positives.
 
-### Torque and Speed Reasoning
+### 4. ⚡ Torque and Speed Reasoning
 - Each EV3 Medium Motor delivers 8 N·cm nominal torque and 12 N·cm stall torque, with a top speed of 240–250 rpm.
 - We selected these motors because they provide a strong balance between power and precision, enabling controlled acceleration while preserving the accuracy needed for line following and obstacle approach.
 - We tuned the drive train for moderate speed with high controllability rather than maximum velocity because that improves performance for precise navigation tasks.
 - We geared the steering motor for smooth, repeatable wheel angles to enable accurate turns and stable lane corrections based on sensor feedback.
 - We prioritized reproducible motion over raw acceleration to reduce mechanical stress and ensure repeatable performance across many runs.
 
-### Design Justification
+### 5. ✅ Design Justification
 - We designed the robot for rigidity, precision, and reliability, choosing control and repeatability over raw speed.
 - We added custom structural reinforcements and sensor mounts after testing revealed flex and alignment issues, because eliminating chassis flex directly improved sensor consistency and navigation accuracy.
 - We validated the design with multiple test sessions: the robot completed more than 50 runs with consistent handling, showing over 90% success rate in repeated mobility and navigation trials.
@@ -411,19 +372,13 @@ Notes:
 - **PixyCam verification** includes cleaning the lens, checking object signatures with PixyMon, and confirming detection reliability under competition lighting.
 - Regular inspection of connector seating, cable strain relief, and sensor alignment is part of the pre-run checklist.
 
-### 6. 🗺️ Diagrams and Reference
-- The full power distribution and sensor port layout is documented in `diagram/ev3-port-connection-layout.png`.
-- The Pixy wiring photo is available at `v-photos/components/pixy-cam-wiring.jpg`.
-- The custom EV3 output cable-to-relay wiring photo is available at `diagram/custom-cable-detail-for-light.jpg`.
-- These diagrams provide a visual reference for how the EV3 battery, sensors, motors, relay, and LED system are connected.
-
 ---
 
 ## 🧠 Software Architecture & Obstacle Strategy
 
-This section is reason-driven and organized to show why each software design choice was made. The robot’s architecture is explained through four clearly separated views: flowchart, algorithm phases, path keeping, and obstacle encounter strategy.
+This section is reason-driven and organized to show why each software design choice was made. The robot's architecture is explained through four clearly separated views: flowchart, algorithm phases, path keeping, and obstacle encounter strategy.
 
-### 1. Flowchart: Full Obstacle Challenge Algorithm
+### 1. 📊 Flowchart: Full Obstacle Challenge Algorithm
 - The full obstacle challenge flowchart is shown below.
 - This diagram traces the robot from the moment the start button is pressed to the moment it finishes parking, including:
   - startup, sensor health verification, and LED readiness
@@ -444,7 +399,7 @@ This section is reason-driven and organized to show why each software design cho
 <img src="diagram/software-diagrams/obstacle-challenge-flowchart.png" alt="Obstacle Challenge Flowchart" width="70%"/>
 </div>
 
-### 2. Algorithms: Why the Robot is Divided into Three Phases
+### 2. 🔀 Algorithms: Why the Robot is Divided into Three Phases
 - The Obstacle Challenge software is intentionally split into three reasoned phases:
   1. **Exit the parking bay**
   2. **Main traversal loop** (12 section passes = 3 full laps)
@@ -480,7 +435,7 @@ This section is reason-driven and organized to show why each software design cho
 - The robot performs the main traversal only, without opening the camera-based obstacle branch.
 - This decision keeps both scripts aligned conceptually and makes the Open Challenge implementation simpler while retaining the same robust section-based control logic.
 
-### 3. Path Maintenance: Why Gyro + Ultrasonic are Both Needed
+### 3. 🧭 Path Maintenance: Why Gyro + Ultrasonic are Both Needed
 - Path maintenance in Obstacle Challenge uses a **hybrid control strategy**.
 - The **gyro sensor** is responsible for keeping the robot straight inside each section. This prevents the robot from accumulating heading error over long straight segments.
 - The **ultrasonic sensor** ensures the robot stays centered in the section by comparing distance to the inner wall.
@@ -492,7 +447,7 @@ This section is reason-driven and organized to show why each software design cho
 - This hybrid approach is also a robustness strategy: the gyro corrects heading faster than wall distance feedback alone, while the ultrasonic sensor prevents gradual drift that could cause a collision.
 - The same gyro + ultrasonic path maintenance is used exactly the same way in the Open Challenge, even though the camera is disabled. That consistency reduces software complexity and risk.
 
-### 4. Obstacle Encounter Strategy: Linear Formula with Color-Based Side Choice
+### 4. 🚧 Obstacle Encounter Strategy: Linear Formula with Color-Based Side Choice
 - When the Pixy camera sees an obstacle, the robot switches from normal path maintenance to obstacle handling.
 - The obstacle algorithm first detects the obstacle color, then uses the obstacle’s horizontal position (`x`) and proximity (`y`) from the Pixy camera to compute movement.
 - Front LED illumination is part of this strategy, stabilizing vision quality and helping the Pixy camera detect obstacles more reliably under variable lighting.
@@ -509,18 +464,18 @@ This section is reason-driven and organized to show why each software design cho
 <img src="diagram/software-diagrams/obstacle-algorithm-linear-formula.png" alt="Obstacle Strategy Formula" width="70%"/>
 </div>
 
-### Why this structure?
+### 5. 🤔 Why this structure?
 - We organize the section to show the reasons behind each design choice, not only what the robot does.
 - The four views ensure the robot’s software is clearly understood as a flowchart-driven system, a repeated section algorithm, a combined path control mechanism, and an obstacle-specific strategy.
 - That clarity is essential for scoring this section: the algorithm is visible, the path keeping method is explicit, and the obstacle strategy is documented with both a diagram and a formula.
 
 ---
 
-## 🧠 Systems Thinking & Engineering Decisions
+## 💡 Systems Thinking & Engineering Decisions
 
 This section explains the engineering logic behind the robot design, the relationships between subsystems, and the reasoning used to make the system robust for the Future Engineers challenge. Every major decision in this project was made not only to improve performance, but also to reduce uncertainty, improve repeatability, and make the robot safer and more reliable during competition.
 
-### 1. Constraints and Design Limitations
+### 1. ⚠️ Constraints and Design Limitations
 - One of the main constraints in our robot is speed. When the robot moves too fast, the time available for reading and processing ultrasonic data becomes too short, which reduces the quality of reactions to walls and makes navigation less stable. This is why we designed the motion system to prioritize controlled movement over aggressive speed.
 - Lighting is another major constraint. In conditions where natural light comes from one side, the Pixy camera struggles to detect obstacles reliably. For this reason, the competition field should ideally be illuminated evenly and without strong directional sunlight. We solved this by installing front LEDs on the robot so that the environment in front of the robot remains more stable and easier for the camera to interpret under different conditions.
 - Mechanical constraints also matter: the robot must remain compact enough for the competition field while still carrying the EV3 brick, motors, sensors, and battery systems. The chassis therefore had to be rigid, lightweight, and stable enough to support consistent motion.
@@ -528,27 +483,27 @@ This section explains the engineering logic behind the robot design, the relatio
 - Sensor constraints are also important: the Pixy camera is sensitive to lighting and angle, ultrasonic sensors can be affected by reflections and geometry, and the gyro can drift if calibration is not handled properly.
 - Competition constraints also shaped the design. The robot had to follow WRO Future Engineers rules, stay practical to build and maintain, and remain robust across repeated runs.
 
-### 2. Subsystem Interactions and Why the Architecture Was Chosen
+### 2. 🔗 Subsystem Interactions and Why the Architecture Was Chosen
 - The drive and steering subsystems are tightly coupled through the EV3 control logic: the rear motor provides forward propulsion, while the front steering motor changes the heading. This separation makes the motion system easier to control and more predictable than a skid-steer layout.
 - The vision subsystem uses the Pixy 2.1 camera to detect obstacles and estimate their position. These measurements directly influence steering decisions and help the robot decide when to track an object or switch to fallback behavior.
 - The proximity subsystem uses two ultrasonic sensors on the left and right sides of the robot to maintain safe side clearance and support navigation when vision is temporarily lost. This improves the robot's ability to follow walls and avoid collisions.
 - The gyro subsystem provides heading feedback to the EV3, allowing the robot to correct drift and maintain better directional stability. This is especially important when the robot must keep a consistent course under repeated motion cycles.
 - The lighting subsystem uses front LEDs, powered separately and controlled through a relay, to improve the camera's visibility and make obstacle detection more reliable under changing light conditions.
 
-### 3. Alternative Design Choices and Justification
+### 3. 🔄 Alternative Design Choices and Justification
 - For the chassis, alternatives such as fully 3D-printed frames, metal structures, or wooden structures could be used. However, each of these has drawbacks. Fully 3D-printed parts can increase cost and fabrication complexity, metal parts add weight and may create mechanical difficulties, and wood can deform under friction, heat, or moisture. We chose LEGO structural parts because they are accessible, modular, and easy to modify. This was a major advantage because when a design flaw was discovered, the team could quickly adjust the chassis and test a new version without rebuilding the entire robot.
 - For the vision system, other cameras could also be used, but they usually require more processing power or higher cost. We selected the Pixy 2.1 because it performs object and obstacle processing internally and sends only the final results to the EV3. This reduces the computing burden on the main processor and allows a higher effective frame rate, which improves reaction speed. A different camera would be possible, but it would usually require more code, more processing on the main controller, and greater design complexity.
 - For the main processor, there is no practical replacement for the EV3 in this robot because it is the most compatible and straightforward platform for controlling the sensors, motors, and power interfaces used here. Its main disadvantage is that it is relatively large and heavy, which makes it less suitable for extremely compact and ultra-light robots.
 - We also considered alternative motion layouts. A skid-steer system could provide aggressive turning, but it would introduce more wheel slip and less predictable motion. Independent drive motors would offer more control freedom, but they would also increase coding complexity and create more failure modes. The chosen rear-drive and front-steer layout was selected because it offers simpler control, more repeatable motion, and better stability for precise navigation.
 
-### 4. Experimental Validation and Iteration Cycles
+### 4. 🧪 Experimental Validation and Iteration Cycles
 - We tested the robot experimentally on the field rather than relying only on theory. Each subsystem was evaluated separately: motors, sensors, and control logic were tested one by one to confirm that each component performed its intended task correctly.
 - We used a strict validation standard. A subsystem was considered successful only when it completed its task correctly for 10 consecutive runs without error. Once that level was reached, it was fixed into the robot and used confidently in future runs.
 - We applied this same logic to all algorithms, including steering control, wall-following behavior, obstacle detection, and fallback strategies. This helped us ensure that the final system was not only functional in principle, but also dependable under real competition conditions.
 - The design evolved through several iterations. Version 1 used a simpler chassis and a rougher sensor layout. Version 2 improved the orientation of the ultrasonic sensors and adjusted the Pixy camera angle. Version 3 moved the gyro closer to the robot center and improved LED positioning. The final adjustment refined the LED angle and control parameters so the robot became more stable and repeatable.
 - The software was also tuned experimentally through repeated test runs. Gains, thresholds, and control limits were adjusted until the motion became smooth and consistent.
 
-### 5. Risk Reduction and Robustness Strategies
+### 5. 🛡️ Risk Reduction and Robustness Strategies
 - One of the most effective ways to reduce risk is to lower the robot speed. Slower movement gives the sensors more time to update, the control loop more time to interpret data, and the motors more time to respond accurately. This reduces the chance of wall collisions and unstable behavior.
 - We also reduced risk by combining multiple sensing methods rather than relying on a single source. Ultrasonic sensors provide distance information for wall-following, while the gyro adds heading stability and improves motion consistency. This produces more reliable results than using either sensor alone.
 - The software includes fallback behavior so that the robot does not fail completely when the main perception method is temporarily weak. If the camera loses the target, the robot can continue with wall-following or search behavior instead of stopping abruptly.
@@ -556,7 +511,7 @@ This section explains the engineering logic behind the robot design, the relatio
 - The lighting system is part of the risk reduction strategy. By controlling the illumination in front of the robot with LEDs, we reduce the effect of changing external light and improve obstacle detection consistency.
 - The overall design also emphasizes maintainability. Spare parts, organized wiring, structured sensor mounting, and clear pre-run checks make the robot easier to repair and safer to use during testing and competition.
 
-### Spare Parts and Pre-Run Checklist
+### 6. 📋 Spare Parts and Pre-Run Checklist
 - Spare parts: two extra EV3 Medium Motors, extra ultrasonic sensors, extra gyro sensor, one extra Pixy camera, extra wheels and tires, spare EV3 battery, spare LED battery pack, relay, cables, connectors, and soldering tools.
 - Pre-run checklist: confirm the EV3 battery is charged, verify the LED battery pack is charged, clean the Pixy lens, check sensor ports, calibrate the gyro while the robot is still, verify relay operation through OUTPUT_A, inspect cable routing and mounts, and perform a short dry run before the actual challenge.
 
@@ -632,7 +587,7 @@ This project is **open-source** and welcomes:
 
 ### Quick Links
 - 📧 **Email**: sepehryavarzadeh@gmail.com (Project Manager)
-- 🌐 **Instagram**: [@shahroodrc](https://instagram.com/shahroodrc)
+- 🌐 **Instagram**: [@shahroodrc](https://www.instagram.com/shahrood_rc/)
 - 📹 **YouTube**: [ShahroodRC Channel](https://youtube.com/@shahroodrc)
 
 ---
