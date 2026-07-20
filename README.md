@@ -190,6 +190,68 @@ Currently preparing for the **Iran National WRO 2026 Qualifying Round** (July 20
 
 ---
 
+## Robot Progress Journey
+
+A reason-driven timeline of the robot's development through four design stages. Each version reflects a clear decision: what we learned, what we improved, and why the next stage was needed.
+
+### Version 1 – EV3 starter prototype
+
+This first prototype used the EV3 platform with:
+- two ultrasonic sensors for distance awareness
+- a floor-mounted color sensor for lap counting
+- a Pixy 1 camera for early vision experiments
+- two drive motors for propulsion in the Open Challenge, and a single drive motor in the Obstacle Challenge to reduce complexity under difficult conditions
+
+Why this design? The goal was to get a working system on the field quickly and use the color sensor as a simple, reliable lap counter. The limitations were also clear: the robot was slow, the Pixy 1 vision was inconsistent on obstacles, and the system relied too much on floor color detection rather than robust obstacle awareness.
+
+<div align="center">
+<img src="v-photos/version-1/version-1-front.jpg" alt="Version 1 front view" width="45%" />
+<img src="v-photos/version-1/version-1-right.jpg" alt="Version 1 right view" width="45%" />
+</div>
+
+### Version 2 – sensor upgrade and chassis exploration
+
+In the second version we focused on improving sensing and motion control:
+- removed the floor color sensor entirely
+- added a gyro sensor for heading stability
+- upgraded from Pixy 1 to Pixy 2.1 for better obstacle recognition
+- tested a new chassis layout with different wheelbase and track dimensions
+
+Why this design? We needed more reliable perception and better heading control. The Pixy 2.1 and gyro were stronger choices, but the chassis geometry still needed refinement: the front-to-rear spacing was too large and the left-right track too narrow, which prevented the robot from moving as accurately as required.
+
+<div align="center">
+<img src="v-photos/version-2/version-2-front.jpg" alt="Version 2 front view" width="45%" />
+<img src="v-photos/version-2/version-2-left.jpg" alt="Version 2 left view" width="45%" />
+</div>
+
+### Electronic Prototype – parallel non-EV3 path
+
+While building Version 3, we also began a separate electronic robot project to overcome EV3 hardware limits:
+- non-EV3 electronics to escape EV3 processing speed and sensor flexibility constraints
+- a design aimed at higher speed and smaller physical size
+- Open Challenge functionality completed, with obstacle detection in progress
+
+Why this path? We recognized that EV3 imposed hard limits on processing speed, sensor variety, and overall agility. The electronic prototype is intended for future competition use, but it is still under development and not yet ready for the Obstacle Challenge.
+
+<div align="center">
+<img src="v-photos/electronic-robot/electronic-robot-three-quarter.jpg" alt="Electronic robot prototype" width="45%" />
+<img src="v-photos/electronic-robot/electronic-robot-board.jpg" alt="Electronic robot board" width="45%" />
+</div>
+
+### Version 3 – competition-ready EV3 robot
+
+The final version is the most refined and reliable EV3 robot we produced:
+- sensor placement was optimized for gyro, Pixy 2.1, and ultrasonic sensing
+- left-right track width and front-rear wheelbase were corrected for repeatable handling
+- the robot achieved smooth, repeatable motion and met the competition requirements
+
+Why this version? It represents the design that learned from the earlier prototypes: better vision, better heading control, and a corrected chassis layout. This is the version we brought to competition-ready performance.
+
+<div align="center">
+<img src="v-photos/robot-front.jpg" alt="Version 3 front view" width="45%" />
+<img src="v-photos/robot-top.jpg" alt="Version 3 top view" width="45%" />
+</div>
+
 ## Mobility & Mechanical Design
 <div align="center">
 <img src="v-photos/redered_images/render_three_quarter.png" alt="Robot render — three-quarter view" width="60%"/>
