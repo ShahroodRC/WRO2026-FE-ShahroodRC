@@ -8,7 +8,7 @@
 
 **ShahroodRC** – *Future Engineers 2026*  
 🏆 **1st Place – Iran National WRO 2025**  
-🌍 **Heading to Tehran National Final (26-28 Nov 2025)**  
+🌍 **Heading to Tehran National Final (31 Jul 2026)**  
 A fully autonomous LEGO EV3 robot with vision-based obstacle avoidance and precision navigation.
 
 ![Status](https://img.shields.io/badge/Status-Competition%20Ready-brightgreen?style=flat-square)
@@ -29,7 +29,7 @@ A fully autonomous LEGO EV3 robot with vision-based obstacle avoidance and preci
 |---------|---------|
 | 🤖 **Platform** | LEGO EV3 Mindstorms with Python (ev3dev) |
 | 👁️ **Vision System** | Pixy 2.1 camera (60 fps, real-time obstacle detection) |
-| 🧭 **Navigation** | Dual ultrasonic sensors + color sensor for precision wall-following |
+| 🧭 **Navigation** | Dual ultrasonic sensors + gyro sensor for precision wall-following |
 | ⚡ **Performance** | 90% success rate in 50+ test runs; completes challenges in <2min |
 | 🔧 **Custom Parts** | 3D-printed Pixy 2.1 mount for optimal positioning |
 | 📦 **Components** | All standard LEGO pieces (100% WRO-compliant) |
@@ -325,7 +325,7 @@ Why this version? It represents the design that learned from the earlier prototy
 - The port assignments reflect function: separate outputs for steering and propulsion, and a dedicated output for relay control so the LED system does not interfere with drive control.
 
 <div align="center">
-<img src="electronic/ev3-port-connection-layout.png" alt="EV3 port connection layout" width="70%"/>
+<img src="diagram/ev3-port-connection-layout.png" alt="EV3 port connection layout" width="70%"/>
 </div>
 
 ### 2. 🔌 Wiring and Cabling
@@ -348,7 +348,7 @@ Why this version? It represents the design that learned from the earlier prototy
   - The unused conductors were insulated and securely taped.
 
   <div align="center">
-  <img src="electronic/custom-cable-detail-for-light.jpg" alt="Custom EV3 cable adapted to relay for LED control" width="70%"/>
+  <img src="diagram/custom-cable-detail-for-light.jpg" alt="Custom EV3 cable adapted to relay for LED control" width="70%"/>
   </div>
 
 **Pin Connections (for our EV3→relay custom cable):**
@@ -361,6 +361,10 @@ Why this version? It represents the design that learned from the earlier prototy
  - **Blue (Pin 6)** → Insulated (unused encoder feedback wire)
 
 **Relay Output wiring:**
+
+<div align="center">
+<img src="diagram/relay-battery-diagram.jpg" alt="Relay and battery wiring diagram" width="70%"/>
+</div>
 
  - Normally-Open contact → LED+ (battery positive terminal)
  - Common contact → LED- (battery ground terminal)
@@ -375,6 +379,11 @@ The sensors and vision system have low power requirements compared to the motors
 | Pixy 2.1 camera | 5 V (from EV3) | 140 mA | 0.7 W |
 | EV3 Medium Motor (idle) | 9 V (from EV3) | ~80 mA | ~0.72 W |
 | EV3 Medium Motor (stalled) | 9 V (from EV3) | ~800 mA | ~7.2 W |
+
+<div align="center">
+<img src="diagram/power-supply-voltage-layout.jpg" alt="Power supply voltage layout" width="70%"/>
+</div>
+
 
 Notes:
 - Sensor currents are small and do not present a load problem for the EV3 battery pack.
@@ -403,57 +412,107 @@ Notes:
 - Regular inspection of connector seating, cable strain relief, and sensor alignment is part of the pre-run checklist.
 
 ### 6. 🗺️ Diagrams and Reference
-- The full power distribution and sensor port layout is documented in `electronic/ev3-port-connection-layout.png`.
+- The full power distribution and sensor port layout is documented in `diagram/ev3-port-connection-layout.png`.
 - The Pixy wiring photo is available at `v-photos/components/pixy-cam-wiring.jpg`.
-- The custom EV3 output cable-to-relay wiring photo is available at `electronic/custom-cable-detail-for-light.jpg`.
+- The custom EV3 output cable-to-relay wiring photo is available at `diagram/custom-cable-detail-for-light.jpg`.
 - These diagrams provide a visual reference for how the EV3 battery, sensors, motors, relay, and LED system are connected.
 
 ---
 
 ## 🧠 Software Architecture & Obstacle Strategy
 
-### A. Code Structure and Modules
-- The software runs on **EV3Dev2 Python** using two main scripts: `code/open_challenge.py` for the open-course run and `code/obstacle_challenge.py` for the obstacle course.
-- Each script follows a layered structure:
-  - hardware initialization and port assignment
-  - perception and sensor processing
-  - motion control and steering commands
-  - behavior state management and progression through course segments
-- Reusable helper functions include `clamp()` for safe output limiting and `amotor()` for converting target steering into a controlled medium-motor command.
-- The code uses distinct logical modules rather than separate Python packages: motor control, ultrasonic wall sensing, Pixy vision, search fallback behavior, and route progression.
+This section is reason-driven and organized to show why each software design choice was made. The robot’s architecture is explained through four clearly separated views: flowchart, algorithm phases, path keeping, and obstacle encounter strategy.
 
-### B. State Machines and Execution Flow
-- The robot begins in a **startup state**: all sensors are initialized, LEDs indicate readiness, and the run begins after the EV3 button press.
-- Both scripts use explicit loop variables and counters as state managers:
-  - `g`, `a`, `door` and `jahat` in `obstacle_challenge.py`
-  - `sig`, `lastsig`, `Yignor`, `a`, `fasele`, and `ghabeliat` in `open_challenge.py`
+### 1. Flowchart: Full Obstacle Challenge Algorithm
+- The full obstacle challenge flowchart is shown below.
+- This diagram traces the robot from the moment the start button is pressed to the moment it finishes parking, including:
+  - startup, sensor health verification, and LED readiness
+  - direction selection from the parking stall
+  - repeated section loops for three laps
+  - real-time obstacle detection and handling
+  - final parking sequence with ultrasonic wall detection
+- For the **Open Challenge**, the same overall flow is used; the only difference is that camera-specific obstacle branches are removed and the robot relies purely on gyro and ultrasonic guidance.
+- The code structure supporting this flow uses **EV3Dev2 Python** with two main scripts: `code/open_challenge.py` and `code/obstacle_challenge.py`. Each script initializes hardware, processes perception, executes motion commands, and manages behavior state with explicit loop variables and counters.
 - Key runtime states include:
-  - **direction selection**: compare left/right ultrasonic distances to decide the initial approach side
-  - **visual target search**: attempt to detect signatures with the Pixy camera and use `sig` values to classify objects
-  - **tracking mode**: steer toward a detected target when a valid Pixy signature appears
-  - **fallback wall/line following**: when vision fails, use ultrasonic sensors to maintain a lane or wall reference
-  - **segment progression**: advance counters and break loops when the current course section completes
+  - **direction selection**: deciding clockwise or counterclockwise from parking
+  - **section progression**: executing each course segment and updating counters
+  - **obstacle detection**: switching from normal traversal to the obstacle pass algorithm
+  - **fallback wall following**: maintaining course when vision is unavailable
+  - **parking completion**: ending the run safely after the final section
 
-### C. Lane Following and Path Control
-- Lane following is implemented using **side ultrasonic sensing** with a target distance setpoint around **27–33 cm** from the wall.
+<div align="center">
+<img src="diagram/software-diagrams/obstacle-challenge-flowchart.png" alt="Obstacle Challenge Flowchart" width="70%"/>
+</div>
+
+### 2. Algorithms: Why the Robot is Divided into Three Phases
+- The Obstacle Challenge software is intentionally split into three reasoned phases:
+  1. **Exit the parking bay**
+  2. **Main traversal loop** (12 section passes = 3 full laps)
+  3. **Return and park**
+
+- This structure is chosen because each phase has different sensor priorities and risk profiles. Separating them keeps the behavior deterministic and easier to validate under competition rules.
+
+#### Phase 1: Exit the parking bay
+- The robot starts by comparing left and right wall distance with the two ultrasonic sensors.
+- This comparison decides whether the traversal direction is **clockwise or counterclockwise**.
+- Because the field layout determines which wall is on the inner side, using both ultrasonic sensors first avoids guessing and prevents an early wrong turn.
+- After the direction is chosen, the robot steers out of the parking bay with a controlled heading correction and begins the main loop.
+
+#### Phase 2: Main traversal loop
+- The core behavior repeats 12 times, corresponding to the 12 course sections needed for 3 complete laps.
+- In each section:
+  - the **gyro sensor** keeps the robot straight and prevents excessive angular drift inside the section
+  - the **active side ultrasonic sensor** maintains a safe centerline relative to the inner wall, keeping the robot away from both inner and outer walls
+  - when the inner-wall distance grows rapidly, the software interprets this as having passed the central field wall and issues a turn command by updating the gyro heading target
+- This layered approach is chosen because a single sensor cannot reliably maintain both heading and lateral position at the same time. The gyro enforces straightness while the ultrasonic sensor enforces section centering.
+- Maintaining moderate speed is essential here: excessive velocity would shorten sensor update windows, degrade ultrasonic consistency, and reduce the available reaction time for obstacle detection.
+- During the entire main traversal, the Pixy camera is also watching the path ahead. If the camera detects an obstacle, the robot temporarily shifts to the obstacle-pass algorithm.
+
+#### Phase 3: Return and park
+- After 12 sections, the robot enters the parking phase.
+- It first moves cautiously toward the outer boundary wall, using ultrasonic sensing to detect the wall reliably.
+- Then it reverses at a fixed safe distance from the outer wall until the parking zone is recognized by the ultrasonic sensors.
+- Once parking is detected, the robot executes a controlled double-park maneuver.
+- This final phase is separate because parking requires very low speed, precise wall distance control, and the avoidance of any obstacle override behavior.
+
+#### Open Challenge difference
+- In the Open Challenge, the same three-phase structure is preserved, except there is no exit/parking phase.
+- The robot performs the main traversal only, without opening the camera-based obstacle branch.
+- This decision keeps both scripts aligned conceptually and makes the Open Challenge implementation simpler while retaining the same robust section-based control logic.
+
+### 3. Path Maintenance: Why Gyro + Ultrasonic are Both Needed
+- Path maintenance in Obstacle Challenge uses a **hybrid control strategy**.
+- The **gyro sensor** is responsible for keeping the robot straight inside each section. This prevents the robot from accumulating heading error over long straight segments.
+- The **ultrasonic sensor** ensures the robot stays centered in the section by comparing distance to the inner wall.
+- The reason for this combination is practical:
+  - gyro-only control would keep heading but drift laterally toward walls
+  - ultrasonic-only wall following would not maintain a true straight line and would suffer in corners
+- By splitting the task, the robot keeps the wall at a safe offset and maintains heading stability, which also improves obstacle visibility by keeping the camera aligned with the expected path.
 - The control law is proportional: `out = (setpoint - measured_distance) * direction_sign`, then limited with `clamp()` to prevent oversteering.
-- In `open_challenge.py`, the robot also uses Pixy X-coordinates to center itself on a detected target or line marker: `target = (x - center) * gain`, then `amotor(target)` to adjust steering.
-- The `amotor()` helper limits steering output and smooths actuator response, providing stable motion while the robot moves forward continuously.
+- This hybrid approach is also a robustness strategy: the gyro corrects heading faster than wall distance feedback alone, while the ultrasonic sensor prevents gradual drift that could cause a collision.
+- The same gyro + ultrasonic path maintenance is used exactly the same way in the Open Challenge, even though the camera is disabled. That consistency reduces software complexity and risk.
 
-### D. Obstacle Logic and Vision Strategy
-- The Pixy camera is set to `ALL` mode and the code reads signature values from `pixy.value()`, producing `sig==1` or `sig==2` for two target classes.
-- A valid detection is gated with a minimum `y` value (`Yignor`) to ensure the object is large enough and close enough to trust.
-- When a target is visible, the robot computes a steering correction from the Pixy horizontal position and drives toward the object at moderate speed.
-- If vision is lost (`sig == 0`), the software enters a **search fallback**:
-  - continue forward while slowly changing steering until a signature reappears
-  - if necessary, hold a steady course briefly while continuously checking for new detections
-- In `obstacle_challenge.py`, the code augments vision with wall-following behavior: when the target is absent, the robot uses the active side ultrasonic sensor and `fasele` to maintain a safe clearance along the wall.
+### 4. Obstacle Encounter Strategy: Linear Formula with Color-Based Side Choice
+- When the Pixy camera sees an obstacle, the robot switches from normal path maintenance to obstacle handling.
+- The obstacle algorithm first detects the obstacle color, then uses the obstacle’s horizontal position (`x`) and proximity (`y`) from the Pixy camera to compute movement.
+- Front LED illumination is part of this strategy, stabilizing vision quality and helping the Pixy camera detect obstacles more reliably under variable lighting.
+- The algorithm applies a linear formula so that as the robot gets closer the formula output increases and the robot moves farther around the obstacle. This design provides the safest and smoothest motion compared to alternate obstacle-following methods.
+- The formula is designed for two purposes:
+  1. keep the obstacle centered in front of the robot while it is still distant
+  2. adjust the steering angle based on obstacle color when it gets closer
+- In practice, when the obstacle is far the robot drives directly toward it and keeps it in view. As the obstacle approaches and its vertical size increases in the camera frame, the formula smoothly shifts steering to pass on the correct side.
+- Color classification is essential: green obstacles are passed on one side and red obstacles on the other, so the robot does not use a one-size-fits-all avoidance rule.
+- The formula was generated by putting the Pixy camera in **View mode**, recording the initial `x` and `y` values, then placing the robot in the desired obstacle-pass position and recording the secondary `x` and `y` values. Those data points were entered into GeoGebra, and the resulting linear formula was derived from the observed behavior.
+- Once the obstacle is no longer visible, the robot returns to normal gyro + ultrasonic traversal and continues the section loop.
 
-### E. Algorithm Explanation
-- Steering is governed by proportional control: the error between desired and actual values is multiplied by a gain, then clamped to a safe motor range.
-- In `open_challenge.py`, `amotor()` scales the steering error with `0.7` and applies a maximum magnitude, which dampens oscillation and improves stability.
-- In `obstacle_challenge.py`, initial wall control uses a non-linear transformation of the ultrasonic distance to compute a smooth steering command, making the robot more responsive when it gets closer to the wall.
-- The overall strategy balances visual tracking with robust fallback behaviors, combining **vision-guided target alignment** and **ultrasonic-based lane following** so the robot can continue even when the path or object is temporarily lost.
+<div align="center">
+<img src="diagram/software-diagrams/obstacle-algorithm-linear-formula.png" alt="Obstacle Strategy Formula" width="70%"/>
+</div>
+
+### Why this structure?
+- We organize the section to show the reasons behind each design choice, not only what the robot does.
+- The four views ensure the robot’s software is clearly understood as a flowchart-driven system, a repeated section algorithm, a combined path control mechanism, and an obstacle-specific strategy.
+- That clarity is essential for scoring this section: the algorithm is visible, the path keeping method is explicit, and the obstacle strategy is documented with both a diagram and a formula.
 
 ---
 
