@@ -4,7 +4,7 @@
 
 <div align="center">
 
-<img src="pictures/shahroodrc-logo.jpg" alt="ShahroodRC logo" width="80%"/>
+<img src="other/shahroodrc-logo.jpg" alt="ShahroodRC logo" width="80%"/>
 
 **ShahroodRC** – *Future Engineers 2026*  
 🏆 **1st Place – Iran National WRO 2025**  
@@ -16,7 +16,7 @@ A fully autonomous LEGO EV3 robot with vision-based obstacle avoidance and preci
 ![Team](https://img.shields.io/badge/Team%20Size-3%20Students-orange?style=flat-square)
 
 **📱 Connect with us:**
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://instagram.com/shahroodrc)
+[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://www.instagram.com/shahrood_rc?igsh=MWpmMjQ0MG90NzdjOQ==)
 [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://youtube.com/@shahroodrc)
 [![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ShahroodRC)
 
@@ -119,7 +119,7 @@ We are the ShahroodRC team, a group of dedicated students from Iran with a passi
 - **Age**: 20
 - **Description**: Third-year WRO competitor, professional ping-pong player. Studying computer science, passionate about math, physics, and programming.
 - **Contact**: amirparsa.saemi2021@gmail.com
-- **Links**: [Instagram](https://www.instagram.com/hotaru_tempest/)
+- **Links**: [Instagram](https://www.instagram.com/amirparsa_saemi/)
 
 ### 👨🏻‍🏫 Ali Raeesian
 - **Role**: Coach
@@ -568,6 +568,59 @@ This section explains the engineering logic behind the robot design, the relatio
 | Mechanical looseness or cable interference | Sensor alignment and motion stability may be affected | Reinforced mounts, organized cabling, and vibration-resistant assembly |
 | Power drop during long or aggressive runs | Performance may degrade during the mission | Moderate motor power, controlled acceleration, and battery checks |
 | Single-point failure in a critical subsystem | One weak component could compromise the full run | Spare parts, fallback logic, and simple recovery behavior |
+---
+
+## 📱 Randomizer App
+
+> Generates **WRO-compliant** random tracks for both challenges.
+
+To help our team test the robot against unpredictable track layouts, ShahroodRC developed a custom Android **Randomizer App**. It creates randomized, rule-compliant configurations for both the **Open Challenge** and the **Obstacle Challenge**, enabling faster practice setup and more robust validation.
+
+### App Screenshots
+<div align="center">
+  <table>
+    <tr>
+      <td><img src="other\randomizer-screenshots\welcome-screen.jpg" width="200"/></td>
+      <td><img src="other\randomizer-screenshots\main-menu.jpg" width="200"/></td>
+      <td><img src="other\randomizer-screenshots\challenge-selection.jpg" width="200"/></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Welcome Screen</b></td>
+      <td align="center"><b>Main Menu</b></td>
+      <td align="center"><b>Challenge Selection</b></td>
+    </tr>
+    <tr>
+      <td><img src="other\randomizer-screenshots\obstacle-randomized.jpg" width="200"/></td>
+      <td><img src="other\randomizer-screenshots\open-randomized.jpg" width="200"/></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Obstacle Challenge</b></td>
+      <td align="center"><b>Open Challenge</b></td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+
+### Features
+- **Dual challenge support** for both Open and Obstacle rounds.
+- **Rule-compliant layouts** following WRO Future Engineers requirements.
+- **Simple interface** with one-touch generation.
+- **Offline operation** for use in any practice environment.
+- **Exportable results** for easy sharing and setup.
+
+### Usage
+1. Install `randomizer.apk` on any Android device (Android 7.0+ recommended).
+2. Open the app and choose the challenge type: **Open** or **Obstacle**.
+3. Use the generated layout to set up your practice arena or test robot behavior.
+
+> **Note**: This app was used internally during development to ensure the robot could handle any valid WRO scenario with robustness and adaptability.
+
+### Download
+- [`randomizer.apk`](randomizer.apk)
+
+> **Security Note**: This APK is built and signed by the ShahroodRC team. Scan files with your preferred antivirus before installation.
+
 ---
 
 ## �🤝 Contributing & Support
