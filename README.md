@@ -45,13 +45,52 @@ ShahroodRC blends "Shahrood" (our hometown in Iran, symbolizing resilience like 
 ## Table of Contents
 
 - [👥 The Team](#-the-team)
-- [🏆 National Championship Victory & International Success](#-national-championship-victory--international-success)
-- [🚀 Robot Progress Journey](#-robot-progress-journey)
-- [⚙️ Mobility & Mechanical Design](#️-mobility--mechanical-design)
-- [⚡ Power and Sense Management](#-power-and-sense-management)
-- [🧠 Software Architecture & Obstacle Strategy](#-software-architecture--obstacle-strategy)
-- [💡 Systems Thinking & Engineering Decisions](#-systems-thinking--engineering-decisions)
+- [🏆 National Championship Victory](#-national-championship-victory)
+- [🎯 Mission Overview for WRO Future Engineers Rounds](#-mission-overview-for-wro-future-engineers-rounds)
+- [📸 Pictures](#-pictures)
+- [🎬 Videos](#-videos)
 - [📱 Randomizer App](#-randomizer-app)
+- [🔄 Our Path – Platform Evolution](#-our-path--platform-evolution)
+- [🔄 Design Evolution & Iteration History](#-design-evolution--iteration-history)
+- [📊 Performance Metrics & Statistics](#-performance-metrics--statistics)
+- [🤖 Robot Components Overview](#-robot-components-overview)
+- [💻 Code For Each Component](#-code-for-each-component)
+    - [🔄 Drive Motor Code](#-drive-motor-code)
+    - [🎯 Steering Motor Code](#-steering-motor-code)
+    - [📷 Pixy Camera Code](#-pixy-camera-code)
+    - [🌈 Color Sensor Code](#-color-sensor-code)
+    - [💡 LED Indicator Code](#-led-indicator-code)
+    - [📏 Ultrasonic Sensor Code](#-ultrasonic-sensor-code)
+    - [🔘 Button Control Code](#-button-control-code)
+    - [⚡ Main Control Flow](#-main-control-flow)
+- [🚗 Mobility Management](#-mobility-management)
+    - [1. 📍 Introduction to Mobility System](#1--introduction-to-mobility-system)
+    - [2. ⚙️ Motors and Actuators](#2-️-motors-and-actuators)
+    - [3. 📡 Sensor Integration for Mobility](#3--sensor-integration-for-mobility)
+    - [4. 🎮 Mobility Control Algorithms](#4--mobility-control-algorithms)
+    - [5. ⚡ Energy Management for Mobility](#5--energy-management-for-mobility)
+    - [6. 🔗 System Integration for Mobility](#6--system-integration-for-mobility)
+    - [7. 🧪 Testing and Optimization](#7--testing-and-optimization)
+    - [8. ✅ Conclusion](#8--conclusion)
+- [⚡ Power and Sense Management](#-power-and-sense-management)
+    - [1. 🔋 Power Supply and Distribution](#1--power-supply-and-distribution)
+    - [2. 📊 Power Consumption Overview](#2--power-consumption-overview)
+    - [3. 📡 Sensor Architecture and Management](#3--sensor-architecture-and-management)
+    - [4. 🔗 Wiring and Safety](#4--wiring-and-safety)
+    - [5. 🔍 Diagnostics and Monitoring](#5--diagnostics-and-monitoring)
+    - [6. ⚙️ Optimization Techniques](#6-️-optimization-techniques)
+    - [7. ✅ Conclusion](#7--conclusion)
+- [🚧 Obstacle Management](#-obstacle-management)
+    - [🏁 Qualification Round (Open Challenge)](#-qualification-round-open-challenge)
+    - [🏆 Final Round with Obstacle Avoidance (Obstacle Challenge)](#-final-round-with-obstacle-avoidance-obstacle-challenge)
+- [🏗️ Robot Assembly Guide](#️-robot-assembly-guide)
+- [🧠 Software Architecture & Obstacle Strategy](#-software-architecture--obstacle-strategy)
+- [🧠 Systems Thinking & Engineering Decisions](#-systems-thinking--engineering-decisions)
+- [🛠️ Software Setup & Installation](#️-software-setup--installation)
+- [🔧 Sensor Calibration Guide](#-sensor-calibration-guide)
+- [🔴 Problems and Solutions](#-problems-and-solutions)
+- [💰 Cost Report](#-cost-report)
+- [📁 Repository Structure](#-repository-structure)
 - [🤝 Contributing & Support](#-contributing--support)
 - [📖 License](#-license)
 
@@ -286,7 +325,7 @@ Why this version? It represents the design that learned from the earlier prototy
 - The port assignments reflect function: separate outputs for steering and propulsion, and a dedicated output for relay control so the LED system does not interfere with drive control.
 
 <div align="center">
-<img src="diagram/ev3-port-connection-layout.png" alt="EV3 port connection layout" width="70%"/>
+<img src="diagram/ev3-port-connection-layout.jpg" alt="EV3 port connection layout" width="70%"/>
 </div>
 
 ### 2. 🔌 Wiring and Cabling
@@ -396,7 +435,7 @@ This section is reason-driven and organized to show why each software design cho
   - **parking completion**: ending the run safely after the final section
 
 <div align="center">
-<img src="diagram/software-diagrams/obstacle-challenge-flowchart.png" alt="Obstacle Challenge Flowchart" width="70%"/>
+<img src="diagram/software-diagrams/obstacle-challenge-flowchart.jpg" alt="Obstacle Challenge Flowchart" width="70%"/>
 </div>
 
 ### 2. 🔀 Algorithms: Why the Robot is Divided into Three Phases
@@ -461,7 +500,7 @@ This section is reason-driven and organized to show why each software design cho
 - Once the obstacle is no longer visible, the robot returns to normal gyro + ultrasonic traversal and continues the section loop.
 
 <div align="center">
-<img src="diagram/software-diagrams/obstacle-algorithm-linear-formula.png" alt="Obstacle Strategy Formula" width="70%"/>
+<img src="diagram/software-diagrams/obstacle-algorithm-linear-formula.jpg" alt="Obstacle Strategy Formula" width="70%"/>
 </div>
 
 ### 5. 🤔 Why this structure?
